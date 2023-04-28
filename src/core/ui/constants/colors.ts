@@ -1,6 +1,5 @@
-export const primaryColor = "#432B3A"
-export const greenColor = "#EFF6D3"
-
+export const primaryColor = '#432B3A';
+export const greenColor = '#EFF6D3';
 
 export const black87 = 'rgba(0, 0, 0, 0.87)';
 export const black60 = 'rgba(0, 0, 0, 0.60)';

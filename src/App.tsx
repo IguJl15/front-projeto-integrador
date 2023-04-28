@@ -6,10 +6,10 @@ import NavBar from './core/ui/components/NavBar';
 function App() {
   return (
     <AuthProvider>
-        <NavBar />
-        <Container maxWidth="xl">
-          <Outlet />
-        </Container>
+      <NavBar />
+      <Container maxWidth="xl">
+        <Outlet />
+      </Container>
     </AuthProvider>
   );
 }

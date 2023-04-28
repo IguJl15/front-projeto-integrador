@@ -1,9 +1,9 @@
-import { AuthData } from '../entities/AuthData';
-import { AuthRepository } from '../contracts/AuthRepository';
 import HttpClient from '@/core/http/HttpClient';
-import { LocalAuthDataNotFound } from '../errors/LocalAuthDataNotFound';
 import LocalStorage from '@/core/local_storage/LocalStorage';
 import { LoginParameters } from '../commands/LoginUseCase';
+import { AuthRepository } from '../contracts/AuthRepository';
+import { AuthData } from '../entities/AuthData';
+import { LocalAuthDataNotFound } from '../errors/LocalAuthDataNotFound';
 
 export class AuthRepositoryImpl implements AuthRepository {
   constructor(private httpClient: HttpClient, private localStorage: LocalStorage) {}

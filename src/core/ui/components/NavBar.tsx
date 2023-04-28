@@ -25,16 +25,17 @@ export default function NavBar() {
             </NavBarItem>
           </Box>
           <Box
-          height={30}
+            height={30}
             sx={{
               backgroundColor: 'white',
               borderRadius: '24px',
               flexGrow: 1,
-              textAlign: 'center'
+              textAlign: 'center',
             }}
           >
-              <Typography variant='body2' color='black'>Imagine a search bar aqui</Typography>
-           
+            <Typography variant="body2" color="black">
+              Imagine a search bar aqui
+            </Typography>
           </Box>
           <div style={{ padding: '0px 8px' }}>
             {auth.signed && (

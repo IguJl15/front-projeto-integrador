@@ -15,6 +15,6 @@ export class LoginUsecase implements UseCase<LoginParameters, AuthData> {
 }
 
 export type LoginParameters = {
-  email: string, 
-  password: string
-}
+  email: string;
+  password: string;
+};

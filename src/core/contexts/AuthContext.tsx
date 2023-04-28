@@ -1,16 +1,16 @@
+import { API_URL } from '@/config';
 import HttpClient, { AxiosClient } from '@/core/http/HttpClient';
+import { BrowserLocalStorage } from '@/core/local_storage/LocalStorage';
+import { PromiseOr } from '@/core/types/PromiseOr';
 import {
   AuthData,
+  AuthError,
   AuthRepository,
   AuthRepositoryImpl,
-  AuthError,
-  LoginUsecase,
   LoginParameters,
+  LoginUsecase,
 } from '@/features/auth';
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
-import { PromiseOr } from '@/core/types/PromiseOr';
-import { API_URL } from '@/config';
-import { BrowserLocalStorage } from '@/core/local_storage/LocalStorage';
 
 interface AuthContextData {
   signed: boolean;
@@ -20,7 +20,10 @@ interface AuthContextData {
 }
 
 const httpClient: HttpClient = new AxiosClient(API_URL);
-const authRepository: AuthRepository = new AuthRepositoryImpl(httpClient, BrowserLocalStorage.instance);
+const authRepository: AuthRepository = new AuthRepositoryImpl(
+  httpClient,
+  BrowserLocalStorage.instance
+);
 
 const loginUseCase = new LoginUsecase(authRepository);
 
@@ -54,7 +57,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   function logOut() {
-    authRepository.deleteLocalAuthData()
+    authRepository.deleteLocalAuthData();
 
     setUser(null);
   }

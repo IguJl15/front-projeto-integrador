@@ -1,7 +1,7 @@
 export default interface LocalStorage {
   read<T>(key: string): T | null;
 
-  save(key: string, data: any): void
+  save(key: string, data: any): void;
 
   delete(key: string): void;
 }
