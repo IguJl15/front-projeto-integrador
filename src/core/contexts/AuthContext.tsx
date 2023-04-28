@@ -10,11 +10,13 @@ import {
   LoginParameters,
   LoginUsecase,
 } from '@/features/auth';
+import { RegisterParameters, RegisterUsecase } from '@/features/auth/commands/RegisterUseCase';
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
 
 interface AuthContextData {
   signed: boolean;
   authData: AuthData | null;
+  register(params: RegisterParameters): PromiseOr<void>;
   logIn(params: LoginParameters): PromiseOr<void>;
   logOut(): PromiseOr<void>;
 }
@@ -26,6 +28,7 @@ const authRepository: AuthRepository = new AuthRepositoryImpl(
 );
 
 const loginUseCase = new LoginUsecase(authRepository);
+const registerUseCase = new RegisterUsecase(authRepository);
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
@@ -56,6 +59,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(loginResponse);
   }
 
+  async function register(params: RegisterParameters) {
+    const registerResponse = await registerUseCase.call(params);
+
+    data.authData = registerResponse;
+    data.signed = true;
+
+    setUser(registerResponse);
+  }
+
   function logOut() {
     authRepository.deleteLocalAuthData();
 
@@ -67,6 +79,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     authData: authData,
     logIn: logIn,
     logOut: logOut,
+    register: register,
   };
 
   return <AuthContext.Provider value={data}>{children}</AuthContext.Provider>;
