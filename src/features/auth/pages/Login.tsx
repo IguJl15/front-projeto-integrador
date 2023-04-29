@@ -1,9 +1,10 @@
 import { useAuth } from '@/core/contexts/AuthContext';
+import { EmailTextField } from '@/core/ui/components/EmailTextField';
 import { black60 } from '@/core/ui/constants/colors';
 import { MailOutline, VpnKeyOutlined } from '@mui/icons-material';
 import { Box, Button, InputAdornment, Stack, TextField, Typography } from '@mui/material';
 import { FormEvent, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Login() {
   const { signed, logIn } = useAuth();
@@ -37,7 +38,7 @@ export default function Login() {
       <Box boxShadow={8} padding={'24px'} width={350}>
         <Stack spacing={'24px'}>
           <Stack spacing={'8px'}>
-            <Typography variant="h3">Login</Typography>
+            <Typography variant="h4">Entrar</Typography>
             <Typography variant="body1" color={black60}>
               Bem vindo de volta. Estamos contentes em ver você novamente. Para continuar, por favor
               digite seu e-mail e senha nos campos abaixo.
@@ -46,22 +47,11 @@ export default function Login() {
           <form onSubmit={onSubmit}>
             <Box>
               <Stack spacing={'20px'}>
-                <TextField
-                  type="email"
-                  name="email"
-                  label="Email"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <MailOutline />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
+                <EmailTextField />
                 <TextField
                   type="password"
                   name="password"
-                  label="Password"
+                  label="Senha"
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
@@ -74,7 +64,7 @@ export default function Login() {
             </Box>
           </form>
           <Stack direction={'row'} justifyContent={'space-between'}>
-            <Button>Criar conta</Button>
+            <Link to='/register'><Button>Criar conta</Button></Link>
             <Button type="submit" variant="contained">
               Entrar
             </Button>
