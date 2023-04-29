@@ -38,14 +38,14 @@ export default function NavBar() {
             </Typography>
           </Box>
           <div style={{ padding: '0px 8px' }}>
-            {auth.signed && (
+            {!auth.signed && (
               <Link to="/">
                 <Button variant="contained" startIcon={<Login />}>
                   Login
                 </Button>
               </Link>
             )}
-            {!auth.signed && (
+            {auth.signed && (
               <Link to="/">
                 <IconButton
                   size="large"
