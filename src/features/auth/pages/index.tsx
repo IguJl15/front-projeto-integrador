@@ -1,6 +1,7 @@
 import { RouteObject } from 'react-router-dom';
 import Login from './Login';
 import Register from './Register';
+import { PhoneRegister } from './PhoneRegiste';
 
 export const AuthRoutes: RouteObject[] = [
   {
@@ -10,5 +11,9 @@ export const AuthRoutes: RouteObject[] = [
   {
     path: 'register',
     element: <Register />,
+  },
+  {
+    path: 'phone register',
+    element: <PhoneRegister />,
   },
 ];
