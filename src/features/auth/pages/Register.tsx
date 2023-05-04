@@ -1,16 +1,11 @@
 import { useAuth } from '@/core/contexts/AuthContext';
 import { EmailTextField } from '@/core/ui/components/EmailTextField';
-import { black60 } from '@/core/ui/constants/colors';
-import {
-  MailOutline,
-  PersonOutline,
-  Visibility,
-  VisibilityOff,
-  VpnKeyOutlined,
-} from '@mui/icons-material';
-import { Box, Button, InputAdornment, Stack, TextField, Typography } from '@mui/material';
+import { PasswordTextField } from '@/core/ui/components/PasswordTextField';
+import { UserTextField } from '@/core/ui/components/UserTextField';
+import { black60, black87 } from '@/core/ui/constants/colors';
+import { Box, Button, Stack, Typography } from '@mui/material';
 import { FormEvent, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 type ErrorState = {
   nameError: string | null;
@@ -39,6 +34,7 @@ export default function Register() {
   function onSubmit(event: FormEvent<HTMLFormElement>): void {
     event.preventDefault();
     const formData = new FormData(event.target as HTMLFormElement);
+    console.table(formData);
 
     register({
       name: '',
@@ -48,49 +44,29 @@ export default function Register() {
     });
   }
 
-  function validateName(event: React.ChangeEvent<HTMLInputElement>) {
-    const name = event.target?.value.trim();
-    if (name == '') return setErrors({ ...errors, nameError: 'O nome não pode estar vazio' });
-
-    const regex = RegExp('^[ a-zA-Z\u00C0-\u017F]+$');
-    if (regex.exec(name) == null)
-      return setErrors({ ...errors, nameError: 'O nome deve conter somente letras' });
-
-    return setErrors({ ...errors, nameError: null });
-  }
-
-  function validatePassword(event: React.ChangeEvent<HTMLInputElement>) {
-    const password = event.target?.value;
-
-    setPassword(event.target?.value);
-
-    const regex = RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/);
-
-    if (regex.exec(password) == null) {
-      return setErrors({
-        ...errors,
-        passwordError: `A senha deve conter pelo menos: uma letra minúscula, uma letra maiúscula, um número, um caractere especial (!@#$%^&*)`,
-      });
-    }
-
-    return setErrors({ ...errors, passwordError: null });
-  }
-
-  function validatePasswordConfirmation(event: React.ChangeEvent<HTMLInputElement>) {
-    const passwordConfirmation = event.target?.value;
-
+  function validatePasswordConfirmation(passwordConfirmation: string): string | null {
     if (password != passwordConfirmation) {
-      return setErrors({
+      setErrors({
         ...errors,
         passwordConfirmationError: `As senhas devem ser iguais`,
       });
+
+      return 'As senhas devem ser iguais';
     }
 
-    return setErrors({ ...errors, passwordConfirmationError: null });
+    setErrors({ ...errors, passwordConfirmationError: null });
+
+    return null;
   }
 
   function isValidForm(): boolean {
-    return (errors.nameError || errors.passwordError || errors.emailError || errors.passwordConfirmationError) == null;
+    console.table(errors);
+    return (
+      (errors.nameError ||
+        errors.passwordError ||
+        errors.emailError ||
+        errors.passwordConfirmationError) == null
+    );
   }
 
   return (
@@ -105,7 +81,7 @@ export default function Register() {
       <Box boxShadow={8} padding={'24px'} width={350}>
         <Stack spacing={'24px'}>
           <Stack spacing={'8px'}>
-            <Typography variant="h4">{password}</Typography>
+            <Typography variant="h4">Registre-se</Typography>
             <Typography variant="body1" color={black60}>
               Seja bem-vindo(a)! Estamos felizes em ter você aqui. Para começar, por favor preencha
               os campos abaixo com seus dados.
@@ -114,74 +90,44 @@ export default function Register() {
           <form onSubmit={onSubmit}>
             <Box>
               <Stack spacing={'20px'}>
-                <TextField
-                  type="email"
-                  name="email"
-                  label="Nome completo"
-                  error={errors.nameError != null}
-                  onChange={validateName}
-                  helperText={errors.nameError}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <PersonOutline />
-                      </InputAdornment>
-                    ),
+                <UserTextField
+                  onError={(error) => {
+                    setErrors({ ...errors, nameError: error });
                   }}
                 />
                 <EmailTextField
                   onError={(error) => {
-                    console.log("ON ERROR");
-                    console.log(error );
-                    
                     setErrors({ ...errors, emailError: error });
                   }}
                 />
-                <TextField
-                  type="password"
-                  name="password"
+                <PasswordTextField
                   label="Senha"
-                  error={errors.passwordError != null}
-                  onChange={validatePassword}
-                  helperText={errors.passwordError}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        {true ? <VisibilityOff /> : <Visibility />}
-                      </InputAdornment>
-                    ),
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <VpnKeyOutlined />
-                      </InputAdornment>
-                    ),
+                  onChanged={(password: string) => setPassword(password)}
+                  onError={(error) => {
+                    setErrors({ ...errors, passwordError: error });
                   }}
                 />
-                <TextField
-                  type="password"
-                  name="password"
-                  label="Confirmar senha"
-                  error={errors.passwordConfirmationError != null}
-                  onChange={validatePasswordConfirmation}
-                  helperText={errors.passwordConfirmationError}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        {true ? <VisibilityOff /> : <Visibility />}
-                      </InputAdornment>
-                    ),
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <VpnKeyOutlined />
-                      </InputAdornment>
-                    ),
+                <PasswordTextField
+                  label="Confirmar Senha"
+                  customValidateFunction={validatePasswordConfirmation}
+                  onError={(error) => {
+                    setErrors({ ...errors, passwordConfirmationError: error });
                   }}
                 />
               </Stack>
             </Box>
           </form>
+          <Typography variant="caption" color={black87}>
+            Ao se cadastrar, você concorda com os nossos{' '}
+            <Link to={'/'}>
+              <Typography variant="caption" color={'black'}>Termos e Condições de uso</Typography>
+            </Link>
+            . Leia-os com atenção antes de prosseguir.
+          </Typography>
           <Stack direction={'row'} justifyContent={'space-between'}>
-            <Button>Entrar</Button>
+            <Link to={'/login'}>
+              <Button>Fazer Login</Button>
+            </Link>
             <Button type="submit" variant="contained" disabled={!isValidForm()}>
               Criar conta
             </Button>
