@@ -2,14 +2,11 @@ import { MailOutline } from '@mui/icons-material';
 import { InputAdornment, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
 
-export function EmailTextField({ onError }: { onError?: (error: string) => void }) {
+export function EmailTextField({ onError }: { onError?: (error: string | null) => void }) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    console.log('ON USE EFFECT DO EMAIL');
-    console.log(error != null && onError != null);
-
-    if (error != null && onError != null) onError(error);
+    if (onError != null) onError(error);
   }, [error]);
 
   function validate(event: React.ChangeEvent<HTMLInputElement>) {
