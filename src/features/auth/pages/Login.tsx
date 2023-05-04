@@ -1,7 +1,7 @@
 import { useAuth } from '@/core/contexts/AuthContext';
 import { EmailTextField } from '@/core/ui/components/EmailTextField';
 import { black60 } from '@/core/ui/constants/colors';
-import { MailOutline, VpnKeyOutlined } from '@mui/icons-material';
+import { VpnKeyOutlined } from '@mui/icons-material';
 import { Box, Button, InputAdornment, Stack, TextField, Typography } from '@mui/material';
 import { FormEvent, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -64,7 +64,9 @@ export default function Login() {
             </Box>
           </form>
           <Stack direction={'row'} justifyContent={'space-between'}>
-            <Link to='/register'><Button>Criar conta</Button></Link>
+            <Link to="/register">
+              <Button>Criar conta</Button>
+            </Link>
             <Button type="submit" variant="contained">
               Entrar
             </Button>
