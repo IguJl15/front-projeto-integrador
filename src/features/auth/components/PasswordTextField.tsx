@@ -1,20 +1,25 @@
 import { Visibility, VisibilityOff, VpnKeyOutlined } from '@mui/icons-material';
-import { InputAdornment, TextField } from '@mui/material';
+import { IconButton, InputAdornment, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
 
 interface IPasswordTextFieldProps {
   onError?: (error: string | null) => void;
   customValidateFunction?: (password: string) => string | null;
   onChanged?: (password: string) => void;
-  label?:string
+  label?: string;
 }
 
 export const PasswordTextField = (props: IPasswordTextFieldProps) => {
   const [error, setError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   useEffect(() => {
     if (props.onError != null) props.onError(error);
   }, [error]);
+
+  function handleClickPassword() {
+    setShowPassword(!showPassword);
+  }
 
   function onChanged(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault();
@@ -42,7 +47,7 @@ export const PasswordTextField = (props: IPasswordTextFieldProps) => {
 
   return (
     <TextField
-      type="password"
+      type={showPassword ? 'text' : 'password'}
       name="password"
       label={props.label}
       error={error != null}
@@ -55,9 +60,11 @@ export const PasswordTextField = (props: IPasswordTextFieldProps) => {
           </InputAdornment>
         ),
         endAdornment: (
-          <InputAdornment position="end">
-            {true ? <VisibilityOff /> : <Visibility />}
-          </InputAdornment>
+          <IconButton onClick={handleClickPassword} > 
+            <InputAdornment position="end">
+              {showPassword ? <VisibilityOff /> : <Visibility />}
+            </InputAdornment>
+          </IconButton>
         ),
       }}
     />
