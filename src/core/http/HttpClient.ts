@@ -49,8 +49,7 @@ export class AxiosClient implements HttpClient {
     console.log(`Making a request to: ${config.baseURL} + ${config.url}`);
     console.log(`Data:`);
     console.table(config.data);
-    
-    
+
     config.headers!.Accept = 'application/json';
 
     return config;

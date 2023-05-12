@@ -1,12 +1,12 @@
-import { Role } from "./Role";
+import { Role } from './Role';
 
 export class User {
-    constructor(
-        public id: string,
-        public name: string,
-        public email: string,
-        public imageUrl: string,
+  constructor(
+    public id: string,
+    public name: string,
+    public email: string,
+    public imageUrl: string,
 
-        public role: Role
-    ) { }
+    public role: Role
+  ) {}
 }

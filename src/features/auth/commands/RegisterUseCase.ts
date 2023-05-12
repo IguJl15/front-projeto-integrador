@@ -2,11 +2,11 @@ import UseCase from '@/core/types/UseCase';
 import { AuthRepository } from '../contracts/AuthRepository';
 import { AuthData } from '../entities/AuthData';
 
-export class LoginUsecase implements UseCase<LoginParameters, AuthData> {
+export class RegisterUsecase implements UseCase<RegisterParameters, AuthData> {
   constructor(public repository: AuthRepository) {}
 
-  async call(params: LoginParameters): Promise<AuthData> {
-    const userFromRepo = await this.repository.login(params);
+  async call(params: RegisterParameters): Promise<AuthData> {
+    const userFromRepo = await this.repository.register(params);
 
     this.repository.saveLocalAuthData(userFromRepo);
 
@@ -14,7 +14,9 @@ export class LoginUsecase implements UseCase<LoginParameters, AuthData> {
   }
 }
 
-export type LoginParameters = {
+export type RegisterParameters = {
+  name: string;
   email: string;
   password: string;
+  passwordConfirmation: string;
 };

@@ -1,11 +1,15 @@
-import { RouterProvider } from 'react-router-dom';
+import { Container } from '@mui/material';
+import { Outlet } from 'react-router-dom';
 import { AuthProvider } from './core/contexts/AuthContext';
-import { router } from './routes';
+import NavBar from './core/ui/components/NavBar';
 
 function App() {
   return (
     <AuthProvider>
-      <RouterProvider router={router} />
+      <NavBar />
+      <Container maxWidth="xl">
+        <Outlet />
+      </Container>
     </AuthProvider>
   );
 }
