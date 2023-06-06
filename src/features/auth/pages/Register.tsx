@@ -1,7 +1,7 @@
 import { useAuth } from '@/core/contexts/AuthContext';
-import { EmailTextField } from '@/core/ui/components/EmailTextField';
-import { PasswordTextField } from '@/core/ui/components/PasswordTextField';
-import { UserTextField } from '@/core/ui/components/UserTextField';
+import { EmailTextField } from '@/features/auth/components/EmailTextField';
+import { PasswordTextField } from '@/features/auth/components/PasswordTextField';
+import { UserTextField } from '@/features/auth/components/UserTextField';
 import { black60, black87 } from '@/core/ui/constants/colors';
 import { Box, Button, Stack, Typography } from '@mui/material';
 import { FormEvent, useEffect, useState } from 'react';
@@ -42,6 +42,8 @@ export default function Register() {
       password: formData.get('password')?.toString() ?? '',
       passwordConfirmation: '',
     });
+
+    console.table(formData)
   }
 
   function validatePasswordConfirmation(passwordConfirmation: string): string | null {
@@ -60,7 +62,6 @@ export default function Register() {
   }
 
   function isValidForm(): boolean {
-    console.table(errors);
     return (
       (errors.nameError ||
         errors.passwordError ||

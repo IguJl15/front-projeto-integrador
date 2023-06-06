@@ -1,14 +1,24 @@
 import { useAuth } from '@/core/contexts/AuthContext';
-import { EmailTextField } from '@/core/ui/components/EmailTextField';
+import { EmailTextField } from '@/features/auth/components/EmailTextField';
+import { PasswordTextField } from '@/features/auth/components/PasswordTextField';
 import { black60 } from '@/core/ui/constants/colors';
-import { VpnKeyOutlined } from '@mui/icons-material';
-import { Box, Button, InputAdornment, Stack, TextField, Typography } from '@mui/material';
-import { FormEvent, useEffect } from 'react';
+import { Box, Button, Stack, Typography } from '@mui/material';
+import { FormEvent, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+
+type ErrorState = {
+  emailError: string | null;
+  passwordError: string | null;
+};
 
 export default function Login() {
   const { signed, logIn } = useAuth();
   const navigate = useNavigate();
+
+  const [errors, setErrors] = useState<ErrorState>({
+    emailError: null,
+    passwordError: null,
+  });
 
   useEffect(() => {
     if (signed) navigate('/');
@@ -22,6 +32,38 @@ export default function Login() {
       email: formData.get('email')?.toString() ?? '',
       password: formData.get('password')?.toString() ?? '',
     });
+  }
+
+  function emptyPasswordValidation(text: string) {
+    if (text == '') {
+      setErrors({
+        ...errors,
+        passwordError: 'O campo precisa ser preenchido',
+      });
+
+      return 'O campo precisa ser preenchido';
+    }
+
+    setErrors({ ...errors, passwordError: null });
+    return null;
+  }
+
+  function emptyEmailValidation(text: string) {
+    if (text == '') {
+      setErrors({
+        ...errors,
+        passwordError: 'O campo precisa ser preenchido',
+      });
+
+      return 'O campo precisa ser preenchido';
+    }
+
+    setErrors({ ...errors, emailError: null });
+    return null;
+  }
+
+  function isValidForm(): boolean {
+    return (errors.emailError || errors.passwordError) == null;
   }
 
   return (
@@ -47,17 +89,17 @@ export default function Login() {
           <form onSubmit={onSubmit}>
             <Box>
               <Stack spacing={'20px'}>
-                <EmailTextField />
-                <TextField
-                  type="password"
-                  name="password"
+                <EmailTextField
+                  customValidationFunction={emptyEmailValidation}
+                  onError={(error) => {
+                    setErrors({ ...errors, emailError: error });
+                  }}
+                />
+                <PasswordTextField
                   label="Senha"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <VpnKeyOutlined />
-                      </InputAdornment>
-                    ),
+                  customValidateFunction={emptyPasswordValidation}
+                  onError={(error) => {
+                    setErrors({ ...errors, passwordError: error });
                   }}
                 />
               </Stack>
@@ -67,7 +109,7 @@ export default function Login() {
             <Link to="/register">
               <Button>Criar conta</Button>
             </Link>
-            <Button type="submit" variant="contained">
+            <Button type="submit" variant="contained" disabled={!isValidForm()}>
               Entrar
             </Button>
           </Stack>
