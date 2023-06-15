@@ -42,19 +42,17 @@ const posts: INewsCardProps[] = [
 
 export const Dashboard = () => {
   return (
-    <div>
-      <Stack boxShadow={3} padding={2} gap={2}>
-        {posts.map((data, index) => (
-          <NewsCard
-            key={index}
-            image={data.image}
-            title={data.title}
-            mainContent={data.mainContent}
-            secondaryContent={data.secondaryContent}
-            keyWordList={data.keyWordList}
-          />
-        ))}
-      </Stack>
-    </div>
+    <Stack boxShadow={3} padding={2} gap={2}>
+      {posts.map((data, index) => (
+        <NewsCard
+          key={index}
+          image={data.image}
+          title={data.title}
+          mainContent={data.mainContent}
+          secondaryContent={data.secondaryContent}
+          keyWordList={data.keyWordList}
+        />
+      ))}
+    </Stack>
   );
 };

@@ -11,10 +11,10 @@ export type INewsCardProps = {
 
 export const NewsCard = (props: INewsCardProps) => {
   return (
-    <Card sx={{ padding: 2, maxHeight: 210, background: '#F5F5F5' }}>
-      <Stack direction={'row'} gap={4}>
-        <CardMedia component="img" height="210" sx={{ width: 300 }} image={props.image} />
-        <CardContent>
+    <Card>
+      <Stack direction={'row'} gap={1} padding={2}>
+        <CardMedia component="img" height="210" sx={{ width: 300, borderRadius:2 }} image={props.image} />
+        <CardContent sx={{ padding: 1, maxHeight:100 }}>
           <Typography variant="h5">{props.title}</Typography>
           <Typography variant="h6">{props.mainContent}</Typography>
           <Typography variant="body1">{props.secondaryContent}</Typography>

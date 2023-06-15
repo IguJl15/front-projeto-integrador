@@ -5,7 +5,7 @@ import { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { greenColor } from '../constants/colors';
 
-export default function NavBar() {
+export function NavBar() {
   const auth = useAuth();
 
   return (
