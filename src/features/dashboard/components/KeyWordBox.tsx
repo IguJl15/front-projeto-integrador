@@ -1,4 +1,5 @@
 import { Box } from '@mui/material';
+import { black4, primaryColor } from '@/core/ui/constants/colors';
 
 export type IKeyWordProps = {
   keyWord: string;
@@ -6,7 +7,7 @@ export type IKeyWordProps = {
 
 export const KeyWordBox = (props: IKeyWordProps) => {
   return (
-    <Box padding={1} sx={{ background: '#D0D0D0', color: 'white', borderRadius: 5 }}>
+    <Box padding={1} sx={{ background: black4, color: primaryColor, borderRadius: 5 }}>
       {props.keyWord}
     </Box>
   );
