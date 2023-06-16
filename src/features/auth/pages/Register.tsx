@@ -6,6 +6,8 @@ import { black60, black87 } from '@/core/ui/constants/colors';
 import { Box, Button, Stack, Typography } from '@mui/material';
 import { FormEvent, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import Failure from '@/core/error/Failure';
+import { useError } from '@/core/contexts/ErrorContext';
 
 type ErrorState = {
   nameError: string | null;
@@ -17,6 +19,7 @@ type ErrorState = {
 export default function Register() {
   const navigate = useNavigate();
   const { signed, register } = useAuth();
+  const { showError } = useError();
 
   const [password, setPassword] = useState('');
 
@@ -31,19 +34,22 @@ export default function Register() {
     if (signed) navigate('/');
   });
 
-  function onSubmit(event: FormEvent<HTMLFormElement>): void {
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const formData = new FormData(event.target as HTMLFormElement);
     console.table(formData);
-
-    register({
-      fullName: formData.get('userName')?.toString() ?? '',
+    try {
+      await register({
+        fullName: formData.get('name')?.toString() ?? '',
       email: formData.get('email')?.toString() ?? '',
       password: formData.get('password')?.toString() ?? '',
       passwordConfirmation: formData.get('password')?.toString() ?? '',
     });
-
-    console.table(formData)
+    } catch (error) {
+      if (error instanceof Failure) {
+        showError(error);
+      }
+    }
   }
 
   function validatePasswordConfirmation(passwordConfirmation: string): string | null {
