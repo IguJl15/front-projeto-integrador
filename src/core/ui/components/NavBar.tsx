@@ -39,14 +39,14 @@ export default function NavBar() {
           </Box>
           <div style={{ padding: '0px 8px' }}>
             {!auth.signed && (
-              <Link to="/">
+              <Link to="/login">
                 <Button variant="contained" startIcon={<Login />}>
                   Login
                 </Button>
               </Link>
             )}
             {auth.signed && (
-              <Link to="/">
+              <Link to="/account">
                 <IconButton
                   size="large"
                   aria-label="account of current user"

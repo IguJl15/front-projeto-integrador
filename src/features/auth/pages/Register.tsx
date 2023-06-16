@@ -37,10 +37,10 @@ export default function Register() {
     console.table(formData);
 
     register({
-      name: '',
+      fullName: formData.get('userName')?.toString() ?? '',
       email: formData.get('email')?.toString() ?? '',
       password: formData.get('password')?.toString() ?? '',
-      passwordConfirmation: '',
+      passwordConfirmation: formData.get('password')?.toString() ?? '',
     });
 
     console.table(formData)
@@ -117,7 +117,6 @@ export default function Register() {
                 />
               </Stack>
             </Box>
-          </form>
           <Typography variant="caption" color={black87}>
             Ao se cadastrar, você concorda com os nossos{' '}
             <Link to={'/'}>
@@ -133,6 +132,7 @@ export default function Register() {
               Criar conta
             </Button>
           </Stack>
+          </form>
         </Stack>
       </Box>
     </div>

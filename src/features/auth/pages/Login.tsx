@@ -26,6 +26,7 @@ export default function Login() {
 
   function onSubmit(event: FormEvent<HTMLFormElement>): void {
     event.preventDefault();
+    
     const formData = new FormData(event.target as HTMLFormElement);
 
     logIn({
@@ -104,7 +105,6 @@ export default function Login() {
                 />
               </Stack>
             </Box>
-          </form>
           <Stack direction={'row'} justifyContent={'space-between'}>
             <Link to="/register">
               <Button>Criar conta</Button>
@@ -113,6 +113,7 @@ export default function Login() {
               Entrar
             </Button>
           </Stack>
+          </form>
         </Stack>
       </Box>
     </div>
