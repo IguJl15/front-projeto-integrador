@@ -29,14 +29,14 @@ export default function Login() {
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    
+
     const formData = new FormData(event.target as HTMLFormElement);
 
     try {
       await logIn({
-      email: formData.get('email')?.toString() ?? '',
-      password: formData.get('password')?.toString() ?? '',
-    });
+        email: formData.get('email')?.toString() ?? '',
+        password: formData.get('password')?.toString() ?? '',
+      });
     } catch (error) {
       if (error instanceof Failure) {
         showError(error);
@@ -107,6 +107,7 @@ export default function Login() {
                 />
                 <PasswordTextField
                   label="Senha"
+                  name="current-password"
                   customValidateFunction={emptyPasswordValidation}
                   onError={(error) => {
                     setErrors({ ...errors, passwordError: error });
@@ -114,14 +115,14 @@ export default function Login() {
                 />
               </Stack>
             </Box>
-          <Stack direction={'row'} justifyContent={'space-between'}>
-            <Link to="/register">
-              <Button>Criar conta</Button>
-            </Link>
-            <Button type="submit" variant="contained" disabled={!isValidForm()}>
-              Entrar
-            </Button>
-          </Stack>
+            <Stack paddingTop={'24px'} direction={'row'} justifyContent={'space-between'}>
+              <Link to="/register">
+                <Button>Criar conta</Button>
+              </Link>
+              <Button type="submit" variant="contained" disabled={!isValidForm()}>
+                Entrar
+              </Button>
+            </Stack>
           </form>
         </Stack>
       </Box>

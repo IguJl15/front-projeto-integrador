@@ -41,10 +41,10 @@ export default function Register() {
     try {
       await register({
         fullName: formData.get('name')?.toString() ?? '',
-      email: formData.get('email')?.toString() ?? '',
-      password: formData.get('password')?.toString() ?? '',
-      passwordConfirmation: formData.get('password')?.toString() ?? '',
-    });
+        email: formData.get('email')?.toString() ?? '',
+        password: formData.get('password')?.toString() ?? '',
+        passwordConfirmation: formData.get('password')?.toString() ?? '',
+      });
     } catch (error) {
       if (error instanceof Failure) {
         showError(error);
@@ -95,49 +95,55 @@ export default function Register() {
             </Typography>
           </Stack>
           <form onSubmit={onSubmit}>
-            <Box>
-              <Stack spacing={'20px'}>
-                <UserTextField
-                  onError={(error) => {
-                    setErrors({ ...errors, nameError: error });
-                  }}
-                />
-                <EmailTextField
-                  onError={(error) => {
-                    setErrors({ ...errors, emailError: error });
-                  }}
-                />
-                <PasswordTextField
-                  label="Senha"
-                  onChanged={(password: string) => setPassword(password)}
-                  onError={(error) => {
-                    setErrors({ ...errors, passwordError: error });
-                  }}
-                />
-                <PasswordTextField
-                  label="Confirmar Senha"
-                  customValidateFunction={validatePasswordConfirmation}
-                  onError={(error) => {
-                    setErrors({ ...errors, passwordConfirmationError: error });
-                  }}
-                />
+            <Stack spacing={'24px'}>
+              <Box>
+                <Stack spacing={'20px'}>
+                  <UserTextField
+                    onError={(error) => {
+                      setErrors({ ...errors, nameError: error });
+                    }}
+                  />
+                  <EmailTextField
+                    onError={(error) => {
+                      setErrors({ ...errors, emailError: error });
+                    }}
+                  />
+                  <PasswordTextField
+                    label="Senha"
+                    name="new-password"
+                    onChanged={(password: string) => setPassword(password)}
+                    onError={(error) => {
+                      setErrors({ ...errors, passwordError: error });
+                    }}
+                  />
+                  <PasswordTextField
+                    label="Confirmar Senha"
+                    name="new-password"
+                    customValidateFunction={validatePasswordConfirmation}
+                    onError={(error) => {
+                      setErrors({ ...errors, passwordConfirmationError: error });
+                    }}
+                  />
+                </Stack>
+              </Box>
+              <Typography variant="caption" color={black87}>
+                Ao se cadastrar, você concorda com os nossos{' '}
+                <Link to={'/'}>
+                  <Typography variant="caption" color={'black'}>
+                    Termos e Condições de uso
+                  </Typography>
+                </Link>
+                . Leia-os com atenção antes de prosseguir.
+              </Typography>
+              <Stack direction={'row'} justifyContent={'space-between'}>
+                <Link to={'/login'}>
+                  <Button>Fazer Login</Button>
+                </Link>
+                <Button type="submit" variant="contained" disabled={!isValidForm()}>
+                  Criar conta
+                </Button>
               </Stack>
-            </Box>
-          <Typography variant="caption" color={black87}>
-            Ao se cadastrar, você concorda com os nossos{' '}
-            <Link to={'/'}>
-              <Typography variant="caption" color={'black'}>Termos e Condições de uso</Typography>
-            </Link>
-            . Leia-os com atenção antes de prosseguir.
-          </Typography>
-          <Stack direction={'row'} justifyContent={'space-between'}>
-            <Link to={'/login'}>
-              <Button>Fazer Login</Button>
-            </Link>
-            <Button type="submit" variant="contained" disabled={!isValidForm()}>
-              Criar conta
-            </Button>
-          </Stack>
+            </Stack>
           </form>
         </Stack>
       </Box>
