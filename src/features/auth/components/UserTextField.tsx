@@ -39,4 +39,3 @@ export const UserTextField = ({ onError }: { onError?: (error: string | null) =>
     />
   );
 };
-

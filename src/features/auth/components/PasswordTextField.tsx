@@ -61,7 +61,7 @@ export const PasswordTextField = (props: IPasswordTextFieldProps) => {
           </InputAdornment>
         ),
         endAdornment: (
-          <IconButton onClick={handleClickPassword} > 
+          <IconButton onClick={handleClickPassword}>
             <InputAdornment position="end">
               {showPassword ? <VisibilityOff /> : <Visibility />}
             </InputAdornment>

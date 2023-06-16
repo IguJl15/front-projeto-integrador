@@ -37,7 +37,7 @@ export default function Register() {
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const formData = new FormData(event.target as HTMLFormElement);
-    console.table(formData);
+
     try {
       await register({
         fullName: formData.get('name')?.toString() ?? '',

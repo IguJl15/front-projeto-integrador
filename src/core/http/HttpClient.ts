@@ -41,11 +41,11 @@ export class AxiosClient implements HttpClient {
   authResponseErrorInterceptor(error: any): InternalAxiosRequestConfig {
     const hasDetails: boolean = Object.keys(error.response?.data?.error).length > 1;
     let details: { title: string; description: string }[] | undefined;
-    console.table(error.response?.data?.error)
+
     if (hasDetails) {
       details = [];
       Object.entries(error.response?.data?.error).forEach((key) => {
-        if(key[0] !=  'title') details?.push({ title: key[0], description: key[1] as string });
+        if (key[0] != 'title') details?.push({ title: key[0], description: key[1] as string });
       });
     }
 
@@ -53,10 +53,6 @@ export class AxiosClient implements HttpClient {
   }
 
   authRequestInterceptor(config: InternalAxiosRequestConfig): InternalAxiosRequestConfig {
-    console.log(`Making a request to: ${config.baseURL} + ${config.url}`);
-    console.log(`Data:`);
-    console.table(config.data);
-
     config.headers!.Accept = 'application/json';
 
     return config;
