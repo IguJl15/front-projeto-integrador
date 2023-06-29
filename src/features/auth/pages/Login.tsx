@@ -1,5 +1,5 @@
 import { useAuth } from '@/core/contexts/AuthContext';
-import { EmailTextField } from '@/core/ui/components/EmailTextField';
+import { EmailTextField } from '@/features/auth/components/EmailTextField';
 import { black60 } from '@/core/ui/constants/colors';
 import { VpnKeyOutlined } from '@mui/icons-material';
 import { Box, Button, InputAdornment, Stack, TextField, Typography } from '@mui/material';

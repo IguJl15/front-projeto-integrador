@@ -1,4 +1,5 @@
 import App from '@/App';
+import { DirectionPage } from '@/features/directions/pages'
 import { AuthRoutes } from '@/features/auth';
 import { createBrowserRouter } from 'react-router-dom';
 
@@ -9,7 +10,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <h1>Home Page</h1>,
+        element: <DirectionPage />,
       },
       ...AuthRoutes,
     ],

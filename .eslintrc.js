@@ -34,8 +34,17 @@ module.exports = {
         'plugin:prettier/recommended',
         'plugin:testing-library/react',
         'plugin:jest-dom/recommended',
+        'plugin:react/recommended',
+        'plugin:react-hooks/recommended',
+        'standard',
+        'plugin:prettier/recommended',
       ],
       rules: {
+        'printWidth': 80,
+        'tabWidth': 4,
+        'singleQuote': true,
+        'trailingComma': 'all',
+        'arrowParens': 'always',
         'no-restricted-imports': [
           'error',
           {

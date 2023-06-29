@@ -1,14 +1,14 @@
 import { useAuth } from '@/core/contexts/AuthContext';
-import { EmailTextField } from '@/core/ui/components/EmailTextField';
-import { PasswordTextField } from '@/core/ui/components/PasswordTextField';
-import { UserTextField } from '@/core/ui/components/UserTextField';
+import { EmailTextField } from '@/features/auth/components/EmailTextField';
+import { PasswordTextField } from '@/features/auth/components/PasswordTextField';
+import { UserTextField } from '@/features/auth/components/UserTextField';
 import { black60, black87 } from '@/core/ui/constants/colors';
 import { Box, Button, Stack, Typography } from '@mui/material';
 import { FormEvent, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 type ErrorState = {
-  nameError: string | null;
+  nameError: string | null; 
   emailError: string | null;
   passwordError: string | null;
   passwordConfirmationError: string | null;
