@@ -1,34 +1,33 @@
-.form {
-     display: flex;
-     align-items: center;
-     gap: 8px;
-     align-self: stretch;
-     height: 124px;
-     height: 40px;
+
+/* FORM */
+
+form {
+    width: 100%;
 }
 
-.form>label {
-     display: flex;
-     width: 180px;
-     flex-direction: column;
+.formRow {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    align-self: stretch;
+    min-height: 40px;
 
-     color: var(--black-60, rgba(0, 0, 0, 0.60));
-     font-size: 16px;
-     font-family: Roboto;
-     font-weight: 500;
-     line-height: 20px;
-     letter-spacing: undefined;
+    & button {
+        align-self: stretch;
+        max-height: 40px;
+    }
 }
 
-.form input {
-     width: 100%;
+label {
+    display: flex;
+    min-height: 40px;
+    width: 180px;
+    align-items: center;
 
-     display: flex;
-     padding: 8.5px 14px;
-     align-items: center;
-     gap: 8px;
-     align-self: stretch;
+    color: var(--black-60, rgba(0, 0, 0, 0.60));
+    letter-spacing: undefined;
+}
 
-     border-radius: 8px;
-     border: 1px solid var(--border-inactive, rgba(0, 0, 0, 0.38));
+.formRow > div {
+    flex: 1 0 0;
 }

@@ -73,15 +73,8 @@
 }
 
 .modal_filter_text_area {
-     display: flex;
-     flex-direction: column;
-
-     height: 30px;
      width: 100%;
 
-}
-
-.modal_filter_text_area > span {
      color: var(--black-87, rgba(0, 0, 0, 0.87));
      font-size: 20px;
      font-family: Roboto;
@@ -128,4 +121,29 @@ footer {
      align-items: center;
      gap: 10px;
      align-self: stretch;
+}
+
+.term {
+     background-color: var(--black-4, rgba(0, 0, 0, 0.04));
+     color: var(--primary-100, #432B3AFF);
+     padding: 4px 12px;
+     border-radius: 24px;
+}
+
+.termsList {
+     display: flex;
+     flex-direction: row;
+     flex-wrap: wrap;
+     align-items: flex-start;
+     flex: 1 0 0;
+     
+     padding: 16.5px 14px;
+     align-self: stretch;
+     gap: 8px;
+
+     border-radius: 4px;
+     border: 1px solid var(--border-inactive, rgba(0, 0, 0, 0.38));
+
+     min-height: 50px;
+     
 }
