@@ -26,6 +26,7 @@ const authRepository: AuthRepository = new AuthRepositoryImpl(
   httpClient,
   BrowserLocalStorage.instance
 );
+httpClient.getAccessToken = () => authRepository.getLocalAuthData().accessToken;
 
 const loginUseCase = new LoginUsecase(authRepository);
 const registerUseCase = new RegisterUsecase(authRepository);

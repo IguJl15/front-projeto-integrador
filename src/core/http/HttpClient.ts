@@ -1,17 +1,21 @@
 import { API_URL } from '@/config';
 import axios, { Axios, InternalAxiosRequestConfig } from 'axios';
 import { HttpError } from './HttpError';
+import { BrowserLocalStorage } from '../local_storage/LocalStorage';
 
 type Params = { [key: string]: any };
 
 export default interface HttpClient {
   baseUrl: string;
+  getAccessToken: () => String;
+  
   get<T>(path: string, params?: Params): Promise<T>;
   post<T>(path: string, data: any): Promise<T>;
 }
 
 export class AxiosClient implements HttpClient {
   axios!: Axios;
+  getAccessToken!: () => String;  
 
   constructor(public baseUrl: string = API_URL) {
     this.axios = axios.create({
@@ -54,6 +58,7 @@ export class AxiosClient implements HttpClient {
 
   authRequestInterceptor(config: InternalAxiosRequestConfig): InternalAxiosRequestConfig {
     config.headers!.Accept = 'application/json';
+    config.headers.Authorization = "bearer " + this.getAccessToken();
 
     return config;
   }
