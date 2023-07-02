@@ -6,4 +6,3 @@ export * from './entities/Role';
 export * from './entities/User';
 export * from './errors/AuthError';
 export * from './pages';
-

@@ -28,13 +28,13 @@ export class AuthRepositoryImpl implements AuthRepository {
   }
 
   async register(data: RegisterParameters): Promise<AuthData> {
-    const response = await this.httpClient.post<AuthData>('/login/register', data);
+    const response = await this.httpClient.post<AuthData>('/auth/register', data);
 
     return response;
   }
 
   async login(data: LoginParameters): Promise<AuthData> {
-    const response = await this.httpClient.post<AuthData>('/login', data);
+    const response = await this.httpClient.post<AuthData>('/auth/login', data);
 
     return response;
   }

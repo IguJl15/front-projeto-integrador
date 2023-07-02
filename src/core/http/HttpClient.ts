@@ -39,17 +39,20 @@ export class AxiosClient implements HttpClient {
   }
 
   authResponseErrorInterceptor(error: any): InternalAxiosRequestConfig {
-    const message = error.response?.data?.message || error.message;
-    console.log(`Erro no interceptor: ${message}`);
+    const hasDetails: boolean = Object.keys(error.response?.data?.error).length > 1;
+    let details: { title: string; description: string }[] | undefined;
 
-    throw new HttpError(message);
+    if (hasDetails) {
+      details = [];
+      Object.entries(error.response?.data?.error).forEach((key) => {
+        if (key[0] != 'title') details?.push({ title: key[0], description: key[1] as string });
+      });
+    }
+
+    throw new HttpError(error.response?.data?.error.title, details);
   }
 
   authRequestInterceptor(config: InternalAxiosRequestConfig): InternalAxiosRequestConfig {
-    console.log(`Making a request to: ${config.baseURL} + ${config.url}`);
-    console.log(`Data:`);
-    console.table(config.data);
-
     config.headers!.Accept = 'application/json';
 
     return config;

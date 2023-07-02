@@ -1,4 +1,6 @@
 import { useAuth } from '@/core/contexts/AuthContext';
+import { useError } from '@/core/contexts/ErrorContext';
+import Failure from '@/core/error/Failure';
 import { EmailTextField } from '@/features/auth/components/EmailTextField';
 import { PasswordTextField } from '@/features/auth/components/PasswordTextField';
 import { black60 } from '@/core/ui/constants/colors';
@@ -13,6 +15,7 @@ type ErrorState = {
 
 export default function Login() {
   const { signed, logIn } = useAuth();
+  const { showError } = useError();
   const navigate = useNavigate();
 
   const [errors, setErrors] = useState<ErrorState>({
@@ -24,14 +27,21 @@ export default function Login() {
     if (signed) navigate('/');
   });
 
-  function onSubmit(event: FormEvent<HTMLFormElement>): void {
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
     const formData = new FormData(event.target as HTMLFormElement);
 
-    logIn({
-      email: formData.get('email')?.toString() ?? '',
-      password: formData.get('password')?.toString() ?? '',
-    });
+    try {
+      await logIn({
+        email: formData.get('email')?.toString() ?? '',
+        password: formData.get('password')?.toString() ?? '',
+      });
+    } catch (error) {
+      if (error instanceof Failure) {
+        showError(error);
+      }
+    }
   }
 
   function emptyPasswordValidation(text: string) {
@@ -97,6 +107,7 @@ export default function Login() {
                 />
                 <PasswordTextField
                   label="Senha"
+                  name="current-password"
                   customValidateFunction={emptyPasswordValidation}
                   onError={(error) => {
                     setErrors({ ...errors, passwordError: error });
@@ -104,15 +115,15 @@ export default function Login() {
                 />
               </Stack>
             </Box>
+            <Stack paddingTop={'24px'} direction={'row'} justifyContent={'space-between'}>
+              <Link to="/register">
+                <Button>Criar conta</Button>
+              </Link>
+              <Button type="submit" variant="contained" disabled={!isValidForm()}>
+                Entrar
+              </Button>
+            </Stack>
           </form>
-          <Stack direction={'row'} justifyContent={'space-between'}>
-            <Link to="/register">
-              <Button>Criar conta</Button>
-            </Link>
-            <Button type="submit" variant="contained" disabled={!isValidForm()}>
-              Entrar
-            </Button>
-          </Stack>
         </Stack>
       </Box>
     </div>
