@@ -35,7 +35,7 @@ export default function Login() {
     try {
       await logIn({
         email: formData.get('email')?.toString() ?? '',
-        password: formData.get('password')?.toString() ?? '',
+        password: formData.get('current-password')?.toString() ?? '',
       });
     } catch (error) {
       if (error instanceof Failure) {

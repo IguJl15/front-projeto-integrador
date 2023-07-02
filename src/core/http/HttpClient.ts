@@ -1,28 +1,30 @@
 import { API_URL } from '@/config';
-import axios, { Axios, InternalAxiosRequestConfig } from 'axios';
-import { HttpError } from './HttpError';
+import { AuthData, AuthRepository } from '@/features/auth';
+import axios, { Axios, AxiosError, InternalAxiosRequestConfig } from 'axios';
+import { authRepository } from '../contexts/AuthContext';
 import { BrowserLocalStorage } from '../local_storage/LocalStorage';
+import { HttpError } from './HttpError';
 
 type Params = { [key: string]: any };
 
 export default interface HttpClient {
   baseUrl: string;
-  getAccessToken: () => String;
-  
+
   get<T>(path: string, params?: Params): Promise<T>;
   post<T>(path: string, data: any): Promise<T>;
 }
 
 export class AxiosClient implements HttpClient {
   axios!: Axios;
-  getAccessToken!: () => String;  
 
   constructor(public baseUrl: string = API_URL) {
-    this.axios = axios.create({
-      baseURL: baseUrl,
-    });
+    this.axios = axios.create({ baseURL: baseUrl });
+
     this.axios.interceptors.request.use(this.authRequestInterceptor);
-    this.axios.interceptors.response.use(null, this.authResponseErrorInterceptor);
+    this.axios.interceptors.response.use((response) => {
+      console.log(response.status);
+      return response;
+    }, this.authResponseErrorInterceptor);
   }
 
   async get<T>(path: string, params?: Params): Promise<T> {
@@ -42,23 +44,37 @@ export class AxiosClient implements HttpClient {
     return axiosResponse.data;
   }
 
-  authResponseErrorInterceptor(error: any): InternalAxiosRequestConfig {
-    const hasDetails: boolean = Object.keys(error.response?.data?.error).length > 1;
+  async authResponseErrorInterceptor(error: AxiosError): Promise<InternalAxiosRequestConfig> {
+    if (error.response?.status == 401) {
+      authRepository.refreshTokens();
+
+      error.response = await axios.request({ ...error.config });
+      return { ...error.config } as InternalAxiosRequestConfig;
+    }
+
+    const errorData = error.response?.data as { error: { title: string } };
+
+    const hasDetails: boolean = Object.keys(errorData.error).length > 1;
     let details: { title: string; description: string }[] | undefined;
 
     if (hasDetails) {
       details = [];
-      Object.entries(error.response?.data?.error).forEach((key) => {
-        if (key[0] != 'title') details?.push({ title: key[0], description: key[1] as string });
+      Object.entries(errorData.error).forEach((entry) => {
+        if (entry[0] != 'title')
+          details?.push({ title: entry[0], description: entry[1] as string });
       });
     }
 
-    throw new HttpError(error.response?.data?.error.title, details);
+    throw new HttpError(errorData.error.title, details);
   }
 
   authRequestInterceptor(config: InternalAxiosRequestConfig): InternalAxiosRequestConfig {
     config.headers!.Accept = 'application/json';
-    config.headers.Authorization = "bearer " + this.getAccessToken();
+
+    const token = BrowserLocalStorage.instance.read<AuthData>(
+      AuthRepository.localStorageKey
+    )?.accessToken;
+    if (token) config.headers.Authorization = 'bearer ' + token;
 
     return config;
   }
