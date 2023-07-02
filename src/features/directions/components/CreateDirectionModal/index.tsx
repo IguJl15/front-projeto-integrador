@@ -1,3 +1,5 @@
+import { useError } from '@/core/contexts/ErrorContext';
+import Failure from '@/core/error/Failure';
 import { Add } from '@mui/icons-material';
 import { Button, Divider, Modal, Stack, Typography } from '@mui/material';
 import { ChangeEvent, useState } from 'react';
@@ -11,7 +13,7 @@ interface ModalProps {
 
 export const CreateDirectionModal = (props: ModalProps) => {
   // use errors
-  // TODO: ADD SET ERRORS
+  const { showError } = useError();
 
   // input fields
   const [title, setTitle] = useState('');
@@ -34,13 +36,11 @@ export const CreateDirectionModal = (props: ModalProps) => {
 
   function createDirection() {
     try {
-      // create direction
-
       handleClose();
     } catch (error) {
-      // if (error instanceof DirectionError) {
-      //    // show errors
-      // }
+      if (error instanceof Failure) {
+        showError(error);
+      }
     }
   }
 

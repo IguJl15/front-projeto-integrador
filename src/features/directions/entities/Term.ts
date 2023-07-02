@@ -3,5 +3,5 @@ export class Term {
     public id: string, 
     public description: string, 
     public isForbidden: boolean
-    ) {}
+  ) {}
 }

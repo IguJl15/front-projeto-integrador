@@ -12,9 +12,9 @@ import Failure from '@/core/error/Failure';
 
 export const DirectionPage = () => {
   const repo = new DirectionRepository(httpClient);
-  const [directions, setDirections] = useState<Direction[]>([]);
+  const [directions, setDirections] = useState<Direction[] | null>(null);
   const { showError } = useError();
-  
+
   useEffect(() => {
     try {
       repo.getAllDirections().then((value) => {
@@ -23,19 +23,22 @@ export const DirectionPage = () => {
     } catch (error) {
       if (error instanceof Failure) {
         showError(error);
+        setDirections([]);
       }
     }
   }, []);
 
   return (
     <MainBodyLayout title="Direcionamentos" action={<CreateDirectionModal />}>
-      <div>
-        {directions.length == 0 ? (
+      {directions != null ? (
+        directions?.length == 0 ? (
           <EmptyDirectionsList />
         ) : (
           <DirectionsCardsList directions={directions} />
-        )}
-      </div>
+        )
+      ) : (
+        ''
+      )}
     </MainBodyLayout>
   );
 };

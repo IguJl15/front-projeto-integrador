@@ -8,6 +8,6 @@ export class Direction {
     public status: string,
     public inclusionTerms: Term[],
     public exclusionTerms: Term[],
-    public createdAt: Date,
+    public createdAt: Date
   ) {}
 }

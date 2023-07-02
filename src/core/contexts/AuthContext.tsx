@@ -32,7 +32,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(storedAuthData);
     } catch (error) {
       if (error instanceof AuthError == false) {
-        throw error;  
+        throw error;
       }
     }
   }, []);

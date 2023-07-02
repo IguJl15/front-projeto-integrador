@@ -5,7 +5,7 @@ export class DirectionRepository {
   constructor(private httpClient: HttpClient) {}
 
   async getAllDirections(): Promise<Direction[]> {
-    const response = await this.httpClient.get<{directions: Direction[]}>('/direction/');
+    const response = await this.httpClient.get<{ directions: Direction[] }>('/direction/');
 
     return response.directions;
   }

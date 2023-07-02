@@ -1,5 +1,5 @@
 import { Stack, Typography, CardContent, CardMedia, Card } from '@mui/material';
-import { IKeyWordProps, KeyWordBox } from './KeyWordBox';
+import { IKeyWordProps } from './KeyWordBox';
 import Term from '@/features/directions/components/Terms/Term';
 
 export type INewsCardProps = {

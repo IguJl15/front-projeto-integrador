@@ -6,7 +6,7 @@ export function TermsList({ terms }: { terms: string[] }) {
   return (
     <div className={styles.termsList}>
       {terms.length ? (
-        terms.map((term) => <Term description={term} />)
+        terms.map((term) => <Term key={term} description={term} />)
       ) : (
         <Typography variant="subtitle1" color={black60} paddingLeft={1}>
           Nenhum termo
