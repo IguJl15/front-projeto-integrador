@@ -1,10 +1,21 @@
-import { Button, Divider, Modal, Stack, Typography } from '@mui/material';
+import {
+  Button,
+  Divider,
+  Modal,
+  Stack,
+  Typography,
+} from '@mui/material';
 import { ChangeEvent, useState } from 'react';
 import styles from './modal.module.css';
 import { Add } from '@mui/icons-material';
 import { FormRow, FormRowWithTextField } from '../TextField';
+import Term from '../Terms/Term';
 
-export const CreateDirectionModal = () => {
+interface ModalProps {
+  variant?: 'text' | 'outlined' | 'contained';
+}
+
+export const CreateDirectionModal = (props: ModalProps) => {
   // use errors
   // TODO: ADD SET ERRORS
 
@@ -70,7 +81,7 @@ export const CreateDirectionModal = () => {
 
   return (
     <>
-      <Button startIcon={<Add />} onClick={handleOpen} variant="outlined">
+      <Button startIcon={<Add />} onClick={handleOpen} variant={props.variant ?? 'outlined'}>
         Criar direcionamento
       </Button>
       <Modal
@@ -121,9 +132,7 @@ export const CreateDirectionModal = () => {
               </div>
               <Stack direction="column" spacing={1} pt={1} sx={{ flex: 1 }}>
                 {/* TERMOS DE INCLUSÃO */}
-                <span className={styles.modal_filter_text_area}>
-                  Termos de inclusao
-                </span>
+                <span className={styles.modal_filter_text_area}>Termos de inclusao</span>
                 <FormRowWithTextField
                   inputLabel="Novo termo"
                   inputName="term name"
@@ -163,9 +172,7 @@ export const CreateDirectionModal = () => {
                 </FormRow>
 
                 {/* TERMOS DE EXCLUSÃO */}
-                <span className={styles.modal_filter_text_area}>
-                  Termos de exclusão
-                </span>
+                <span className={styles.modal_filter_text_area}>Termos de exclusão</span>
                 <FormRowWithTextField
                   inputLabel="Novo termo"
                   inputName="term name"
@@ -192,15 +199,9 @@ export const CreateDirectionModal = () => {
                 />
                 <FormRow label="Termos adicionados" name="bad_terms">
                   <div className={styles.termsList}>
-                    {Array.from(exclusionterms.values()).map((term) => {
-                      return (
-                        <div className={styles.term}>
-                          <Typography variant="body2" fontWeight={500}>
-                            {term.toUpperCase()}
-                          </Typography>
-                        </div>
-                      );
-                    })}
+                    {Array.from(exclusionterms.values()).map((term) => (
+                      <Term description={term} />
+                    ))}
                   </div>
                 </FormRow>
               </Stack>

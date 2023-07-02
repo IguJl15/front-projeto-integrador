@@ -123,12 +123,6 @@ footer {
      align-self: stretch;
 }
 
-.term {
-     background-color: var(--black-4, rgba(0, 0, 0, 0.04));
-     color: var(--primary-100, #432B3AFF);
-     padding: 4px 12px;
-     border-radius: 24px;
-}
 
 .termsList {
      display: flex;
@@ -145,5 +139,4 @@ footer {
      border: 1px solid var(--border-inactive, rgba(0, 0, 0, 0.38));
 
      min-height: 50px;
-     
 }
