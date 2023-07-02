@@ -70,8 +70,8 @@ export const CreateDirectionModal = () => {
 
   return (
     <>
-      <Button onClick={handleOpen} variant="outlined">
-        Open modal
+      <Button startIcon={<Add />} onClick={handleOpen} variant="outlined">
+        Criar direcionamento
       </Button>
       <Modal
         open={open}

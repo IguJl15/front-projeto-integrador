@@ -7,7 +7,7 @@ function App() {
   return (
     <AuthProvider>
       <NavBar />
-      <Container maxWidth="xl">
+      <Container maxWidth="xl" sx={{ paddingTop: 2 }}>
         <Outlet />
       </Container>
     </AuthProvider>
