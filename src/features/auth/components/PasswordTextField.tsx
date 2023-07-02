@@ -6,6 +6,7 @@ interface IPasswordTextFieldProps {
   onError?: (error: string | null) => void;
   customValidateFunction?: (password: string) => string | null;
   onChanged?: (password: string) => void;
+  name: string;
   label?: string;
 }
 
@@ -48,7 +49,7 @@ export const PasswordTextField = (props: IPasswordTextFieldProps) => {
   return (
     <TextField
       type={showPassword ? 'text' : 'password'}
-      name="password"
+      name={props.name}
       label={props.label}
       error={error != null}
       onChange={onChanged}
@@ -60,7 +61,7 @@ export const PasswordTextField = (props: IPasswordTextFieldProps) => {
           </InputAdornment>
         ),
         endAdornment: (
-          <IconButton onClick={handleClickPassword} > 
+          <IconButton onClick={handleClickPassword}>
             <InputAdornment position="end">
               {showPassword ? <VisibilityOff /> : <Visibility />}
             </InputAdornment>

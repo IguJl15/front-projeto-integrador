@@ -8,7 +8,7 @@ export function MainBodyLayout({
    children,
 }: {
    title: string;
-   action: ReactNode;
+   action?: ReactNode;
    children: ReactNode;
 }) {
    return (

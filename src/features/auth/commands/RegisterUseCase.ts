@@ -15,7 +15,7 @@ export class RegisterUsecase implements UseCase<RegisterParameters, AuthData> {
 }
 
 export type RegisterParameters = {
-  name: string;
+  fullName: string;
   email: string;
   password: string;
   passwordConfirmation: string;

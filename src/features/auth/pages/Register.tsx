@@ -6,6 +6,8 @@ import { black60, black87 } from '@/core/ui/constants/colors';
 import { Box, Button, Stack, Typography } from '@mui/material';
 import { FormEvent, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import Failure from '@/core/error/Failure';
+import { useError } from '@/core/contexts/ErrorContext';
 
 type ErrorState = {
   nameError: string | null; 
@@ -17,6 +19,7 @@ type ErrorState = {
 export default function Register() {
   const navigate = useNavigate();
   const { signed, register } = useAuth();
+  const { showError } = useError();
 
   const [password, setPassword] = useState('');
 
@@ -31,17 +34,22 @@ export default function Register() {
     if (signed) navigate('/');
   });
 
-  function onSubmit(event: FormEvent<HTMLFormElement>): void {
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const formData = new FormData(event.target as HTMLFormElement);
-    console.table(formData);
 
-    register({
-      name: '',
-      email: formData.get('email')?.toString() ?? '',
-      password: formData.get('password')?.toString() ?? '',
-      passwordConfirmation: '',
-    });
+    try {
+      await register({
+        fullName: formData.get('name')?.toString() ?? '',
+        email: formData.get('email')?.toString() ?? '',
+        password: formData.get('password')?.toString() ?? '',
+        passwordConfirmation: formData.get('password')?.toString() ?? '',
+      });
+    } catch (error) {
+      if (error instanceof Failure) {
+        showError(error);
+      }
+    }
   }
 
   function validatePasswordConfirmation(passwordConfirmation: string): string | null {
@@ -60,7 +68,6 @@ export default function Register() {
   }
 
   function isValidForm(): boolean {
-    console.table(errors);
     return (
       (errors.nameError ||
         errors.passwordError ||
@@ -88,50 +95,56 @@ export default function Register() {
             </Typography>
           </Stack>
           <form onSubmit={onSubmit}>
-            <Box>
-              <Stack spacing={'20px'}>
-                <UserTextField
-                  onError={(error) => {
-                    setErrors({ ...errors, nameError: error });
-                  }}
-                />
-                <EmailTextField
-                  onError={(error) => {
-                    setErrors({ ...errors, emailError: error });
-                  }}
-                />
-                <PasswordTextField
-                  label="Senha"
-                  onChanged={(password: string) => setPassword(password)}
-                  onError={(error) => {
-                    setErrors({ ...errors, passwordError: error });
-                  }}
-                />
-                <PasswordTextField
-                  label="Confirmar Senha"
-                  customValidateFunction={validatePasswordConfirmation}
-                  onError={(error) => {
-                    setErrors({ ...errors, passwordConfirmationError: error });
-                  }}
-                />
+            <Stack spacing={'24px'}>
+              <Box>
+                <Stack spacing={'20px'}>
+                  <UserTextField
+                    onError={(error) => {
+                      setErrors({ ...errors, nameError: error });
+                    }}
+                  />
+                  <EmailTextField
+                    onError={(error) => {
+                      setErrors({ ...errors, emailError: error });
+                    }}
+                  />
+                  <PasswordTextField
+                    label="Senha"
+                    name="new-password"
+                    onChanged={(password: string) => setPassword(password)}
+                    onError={(error) => {
+                      setErrors({ ...errors, passwordError: error });
+                    }}
+                  />
+                  <PasswordTextField
+                    label="Confirmar Senha"
+                    name="new-password"
+                    customValidateFunction={validatePasswordConfirmation}
+                    onError={(error) => {
+                      setErrors({ ...errors, passwordConfirmationError: error });
+                    }}
+                  />
+                </Stack>
+              </Box>
+              <Typography variant="caption" color={black87}>
+                Ao se cadastrar, você concorda com os nossos{' '}
+                <Link to={'/'}>
+                  <Typography variant="caption" color={'black'}>
+                    Termos e Condições de uso
+                  </Typography>
+                </Link>
+                . Leia-os com atenção antes de prosseguir.
+              </Typography>
+              <Stack direction={'row'} justifyContent={'space-between'}>
+                <Link to={'/login'}>
+                  <Button>Fazer Login</Button>
+                </Link>
+                <Button type="submit" variant="contained" disabled={!isValidForm()}>
+                  Criar conta
+                </Button>
               </Stack>
-            </Box>
+            </Stack>
           </form>
-          <Typography variant="caption" color={black87}>
-            Ao se cadastrar, você concorda com os nossos{' '}
-            <Link to={'/'}>
-              <Typography variant="caption" color={'black'}>Termos e Condições de uso</Typography>
-            </Link>
-            . Leia-os com atenção antes de prosseguir.
-          </Typography>
-          <Stack direction={'row'} justifyContent={'space-between'}>
-            <Link to={'/login'}>
-              <Button>Fazer Login</Button>
-            </Link>
-            <Button type="submit" variant="contained" disabled={!isValidForm()}>
-              Criar conta
-            </Button>
-          </Stack>
         </Stack>
       </Box>
     </div>

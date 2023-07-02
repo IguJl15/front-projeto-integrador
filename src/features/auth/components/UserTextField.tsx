@@ -24,7 +24,7 @@ export const UserTextField = ({ onError }: { onError?: (error: string | null) =>
   return (
     <TextField
       type="text"
-      name="userName"
+      name="name"
       label="Nome completo"
       error={error != null}
       onChange={userNameValidation}
@@ -39,4 +39,3 @@ export const UserTextField = ({ onError }: { onError?: (error: string | null) =>
     />
   );
 };
-
