@@ -1,34 +1,41 @@
 import { MainBodyLayout } from '@/core/ui/layouts/MainBodyLayout';
 import { CreateDirectionModal } from '../components/CreateDirectionModal';
-import styles from './directionPage.module.css';
-import { Typography } from '@mui/material';
+
+import { httpClient } from '@/core/contexts/AuthContext';
+import { useEffect, useState } from 'react';
+import { DirectionsCardsList } from '../components/DirectionsList/DirectionsCardsList';
+import { EmptyDirectionsList } from '../components/DirectionsList/EmptyDirectionsList';
+import { DirectionRepository } from '../data/DirectionRepository';
+import { Direction } from '../entities/Direction';
+import { useError } from '@/core/contexts/ErrorContext';
+import Failure from '@/core/error/Failure';
 
 export const DirectionPage = () => {
-  const directions = [];
+  const repo = new DirectionRepository(httpClient);
+  const [directions, setDirections] = useState<Direction[]>([]);
+  const { showError } = useError();
+  
+  useEffect(() => {
+    try {
+      repo.getAllDirections().then((value) => {
+        setDirections(value);
+      });
+    } catch (error) {
+      if (error instanceof Failure) {
+        showError(error);
+      }
+    }
+  }, []);
 
   return (
     <MainBodyLayout title="Direcionamentos" action={<CreateDirectionModal />}>
-      <div>{directions.length == 0 ? <EmptyDirectionsList /> : 'Direcionamentos aqui'}</div>
+      <div>
+        {directions.length == 0 ? (
+          <EmptyDirectionsList />
+        ) : (
+          <DirectionsCardsList directions={directions} />
+        )}
+      </div>
     </MainBodyLayout>
   );
 };
-
-function EmptyDirectionsList() {
-  return (
-    <>
-      <div className={styles.empty_info}>
-        <img
-          className={styles.empty_info_image}
-          src="public/assets/news_image.png"
-          alt="News icon"
-        />
-        <Typography variant="body1" fontSize={24} align="center" fontWeight={300}>
-          Você ainda não tem nenhum direcionamento.
-          <br />
-          Crie um agora para começar a receber notícias
-        </Typography>
-        <CreateDirectionModal variant="contained" />
-      </div>
-    </>
-  );
-}

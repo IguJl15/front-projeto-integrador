@@ -124,19 +124,10 @@ footer {
 }
 
 
-.termsList {
-     display: flex;
-     flex-direction: row;
-     flex-wrap: wrap;
-     align-items: flex-start;
-     flex: 1 0 0;
-     
-     padding: 16.5px 14px;
-     align-self: stretch;
-     gap: 8px;
-
-     border-radius: 4px;
-     border: 1px solid var(--border-inactive, rgba(0, 0, 0, 0.38));
-
-     min-height: 50px;
+.termsListContainer {
+    padding: 16.5px 14px;
+    align-self: stretch;
+    border: 1px solid var(--border-inactive, rgba(0, 0, 0, 0.38));
+    border-radius: 4px;
+    min-height: 50px;
 }

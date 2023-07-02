@@ -1,0 +1,13 @@
+
+.empty_info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 48px;
+    
+}
+
+.empty_info_image {
+    max-width: 200px;
+}

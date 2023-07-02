@@ -1,15 +1,9 @@
-import {
-  Button,
-  Divider,
-  Modal,
-  Stack,
-  Typography,
-} from '@mui/material';
-import { ChangeEvent, useState } from 'react';
-import styles from './modal.module.css';
 import { Add } from '@mui/icons-material';
+import { Button, Divider, Modal, Stack, Typography } from '@mui/material';
+import { ChangeEvent, useState } from 'react';
+import { TermsList } from '../Terms/Term';
 import { FormRow, FormRowWithTextField } from '../TextField';
-import Term from '../Terms/Term';
+import styles from './modal.module.css';
 
 interface ModalProps {
   variant?: 'text' | 'outlined' | 'contained';
@@ -158,16 +152,8 @@ export const CreateDirectionModal = (props: ModalProps) => {
                   }
                 />
                 <FormRow label="Termos adicionados" name="new_terms">
-                  <div className={styles.termsList}>
-                    {Array.from(inclusionTerms.values()).map((term) => {
-                      return (
-                        <div className={styles.term}>
-                          <Typography variant="body2" fontWeight={500}>
-                            {term}
-                          </Typography>
-                        </div>
-                      );
-                    })}
+                  <div className={styles.termsListContainer}>
+                    <TermsList terms={Array.from(inclusionTerms)} />
                   </div>
                 </FormRow>
 
@@ -198,10 +184,8 @@ export const CreateDirectionModal = (props: ModalProps) => {
                   }
                 />
                 <FormRow label="Termos adicionados" name="bad_terms">
-                  <div className={styles.termsList}>
-                    {Array.from(exclusionterms.values()).map((term) => (
-                      <Term description={term} />
-                    ))}
+                  <div className={styles.termsListContainer}>
+                    <TermsList terms={Array.from(exclusionterms)} />
                   </div>
                 </FormRow>
               </Stack>
