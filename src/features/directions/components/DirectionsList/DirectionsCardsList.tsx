@@ -1,13 +1,18 @@
 import { Block, Circle, Delete, Edit } from '@mui/icons-material';
 import { Button, Divider, IconButton, Typography } from '@mui/material';
+import { Direction } from '../../entities/Direction';
 import { TermsList } from '../Terms/Term';
 import styles from './directionsCardsList.module.css';
-import { Direction } from '../../entities/Direction';
 
-export function DirectionsCardsList({ directions }: { directions: Direction[] }) {
+interface DirectionsListProps {
+  directions: Direction[];
+  delete: (id: string) => void;
+}
+
+export function DirectionsCardsList(props: DirectionsListProps) {
   return (
     <div className={styles.directions_list}>
-      {directions.map((dir) => (
+      {props.directions.map((dir) => (
         <div key={dir.id} className={styles.direction_card}>
           <div className={styles.direction_card_body}>
             <div className={styles.direction_card_title_area}>
@@ -50,7 +55,11 @@ export function DirectionsCardsList({ directions }: { directions: Direction[] })
                 Suspender
               </Button>
             </div>
-            <IconButton>
+            <IconButton
+              onClick={() => {
+                props.delete(dir.id);
+              }}
+            >
               <Delete />
             </IconButton>
           </div>

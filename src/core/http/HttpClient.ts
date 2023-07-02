@@ -12,6 +12,7 @@ export default interface HttpClient {
 
   get<T>(path: string, params?: Params): Promise<T>;
   post<T>(path: string, data: any): Promise<T>;
+  delete<T>(path: string, data?: any): Promise<T | void>;
 }
 
 export class AxiosClient implements HttpClient {
@@ -28,18 +29,19 @@ export class AxiosClient implements HttpClient {
   }
 
   async get<T>(path: string, params?: Params): Promise<T> {
-    const axiosResponse = await this.axios.get<T>(path, {
-      params: params,
-      baseURL: this.baseUrl,
-    });
+    const axiosResponse = await this.axios.get<T>(path, { params: params });
 
     return axiosResponse.data;
   }
 
-  async post<T>(path: string, data: any, token?: string): Promise<T> {
-    const axiosResponse = await this.axios.post<T>(path, data, {
-      headers: { Accept: 'application/json', Authorization: token },
-    });
+  async post<T>(path: string, data: any): Promise<T> {
+    const axiosResponse = await this.axios.post<T>(path, data);
+
+    return axiosResponse.data;
+  }
+
+  async delete<T>(path: string, data: any): Promise<T | void> {
+    const axiosResponse = await this.axios.delete<T>(path, { data: data });
 
     return axiosResponse.data;
   }

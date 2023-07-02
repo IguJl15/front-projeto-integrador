@@ -2,30 +2,39 @@ import { MainBodyLayout } from '@/core/ui/layouts/MainBodyLayout';
 import { CreateDirectionModal } from '../components/CreateDirectionModal';
 
 import { httpClient } from '@/core/contexts/AuthContext';
+import { useError } from '@/core/contexts/ErrorContext';
 import { useEffect, useState } from 'react';
 import { DirectionsCardsList } from '../components/DirectionsList/DirectionsCardsList';
 import { EmptyDirectionsList } from '../components/DirectionsList/EmptyDirectionsList';
 import { DirectionRepository } from '../data/DirectionRepository';
 import { Direction } from '../entities/Direction';
-import { useError } from '@/core/contexts/ErrorContext';
-import Failure from '@/core/error/Failure';
 
 export const DirectionPage = () => {
   const repo = new DirectionRepository(httpClient);
   const [directions, setDirections] = useState<Direction[] | null>(null);
-  const { showError } = useError();
+  const { runCatchingFailure } = useError();
+
+  function deleteDirection(id: string) {
+    runCatchingFailure(
+      async () => {
+        await repo.deleteDirection(id);
+        setDirections(directions!.splice(directions!.findIndex((dir) => dir.id == id)));
+      },
+      () => setDirections([])
+    );
+  }
 
   useEffect(() => {
-    try {
-      repo.getAllDirections().then((value) => {
-        setDirections(value);
-      });
-    } catch (error) {
-      if (error instanceof Failure) {
-        showError(error);
+    runCatchingFailure(
+      async () => {
+        const directions = await repo.getAllDirections();
+
+        setDirections(directions);
+      },
+      () => {
         setDirections([]);
       }
-    }
+    );
   }, []);
 
   return (
@@ -34,7 +43,7 @@ export const DirectionPage = () => {
         directions?.length == 0 ? (
           <EmptyDirectionsList />
         ) : (
-          <DirectionsCardsList directions={directions} />
+          <DirectionsCardsList delete={deleteDirection} directions={directions} />
         )
       ) : (
         ''
