@@ -1,5 +1,5 @@
 import App from '@/App';
-import { DirectionPage } from '@/features/directions/pages'
+import { DirectionPage } from '@/features/directions/pages';
 import { AuthRoutes } from '@/features/auth';
 import { Dashboard } from '@/features/dashboard/pages/Dashboard';
 import { createBrowserRouter } from 'react-router-dom';
@@ -15,7 +15,7 @@ export const router = createBrowserRouter([
       },
       {
         path: '/directions',
-        element: <DirectionPage />
+        element: <DirectionPage />,
       },
       ...AuthRoutes,
     ],

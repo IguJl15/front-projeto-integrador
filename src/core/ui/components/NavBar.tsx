@@ -16,10 +16,10 @@ export function NavBar() {
             <img src="https://lorempic.com/46" alt="A" style={{ padding: '0px 8px' }} />
           </Link>
           <Box sx={{ display: { xs: 'flex' } }}>
-            <NavBarItem url='/'>
+            <NavBarItem url="/">
               <Typography variant="body1">Dashboard</Typography>
             </NavBarItem>
-            <NavBarItem url='/directions'>
+            <NavBarItem url="/directions">
               <Typography variant="body1">Direcionamentos</Typography>
             </NavBarItem>
           </Box>

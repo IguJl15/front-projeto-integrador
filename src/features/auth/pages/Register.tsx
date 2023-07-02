@@ -10,7 +10,7 @@ import Failure from '@/core/error/Failure';
 import { useError } from '@/core/contexts/ErrorContext';
 
 type ErrorState = {
-  nameError: string | null; 
+  nameError: string | null;
   emailError: string | null;
   passwordError: string | null;
   passwordConfirmationError: string | null;

@@ -39,8 +39,8 @@ const posts: INewsCardProps[] = [
 
 export const Dashboard = () => {
   return (
-    <MainBodyLayout title='Últimas notícias'>
-      <Stack gap={2} sx={{alignSelf: 'stretch'}}>
+    <MainBodyLayout title="Últimas notícias">
+      <Stack gap={2} sx={{ alignSelf: 'stretch' }}>
         {posts.map((data, index) => (
           <NewsCard
             key={index}
