@@ -24,7 +24,7 @@ export const DirectionPage = () => {
     );
   }
 
-  useEffect(() => {
+  async function fetchDirections(): Promise<void> {
     runCatchingFailure(
       async () => {
         const directions = await repo.getAllDirections();
@@ -35,6 +35,20 @@ export const DirectionPage = () => {
         setDirections([]);
       }
     );
+  }
+
+
+  function suspendDirection(id: string) {
+    runCatchingFailure(
+      async () => {
+        await repo.updateDirectionStatus(id, 'suspended');
+      },
+    );
+  }
+
+  useEffect(() => {
+    fetchDirections()
+    return;
   }, []);
 
   return (
@@ -43,7 +57,7 @@ export const DirectionPage = () => {
         directions?.length == 0 ? (
           <EmptyDirectionsList />
         ) : (
-          <DirectionsCardsList delete={deleteDirection} directions={directions} />
+          <DirectionsCardsList delete={deleteDirection} directions={directions} changeState={suspendDirection}/>
         )
       ) : (
         ''

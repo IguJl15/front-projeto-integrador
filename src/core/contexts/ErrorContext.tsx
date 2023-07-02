@@ -4,7 +4,7 @@ import { Alert, AlertTitle, Snackbar } from '@mui/material';
 
 type ErrorContextData = {
   showError(failure: Failure): void;
-  runCatchingFailure: <T>(fn: () => T, onError: () => any) => T | null;
+  runCatchingFailure: <T>(fn: () => T, onError?: () => any) => T | null;
 };
 
 const ErrorContext = createContext<ErrorContextData>({} as ErrorContextData);
@@ -24,12 +24,14 @@ export function ErrorProvider({ children }: { children: ReactNode }) {
     setError(error);
   }
 
-  function runCatchingFailure<T>(fn: () => T, onError: () => any): T | null {
+  function runCatchingFailure<T>(fn: () => T, onError?: () => any): T | null {
     try {
       return fn();
     } catch (error) {
-      onError();
-      
+      if (onError) {
+        onError();
+      }
+
       if (error instanceof Failure) {
         addError(error);
         return null;
@@ -64,11 +66,11 @@ export function ErrorProvider({ children }: { children: ReactNode }) {
           <AlertTitle>{error?.title}</AlertTitle>
           {error?.details
             ? error!.details.map((e) => (
-                <>
-                  {e.title}: {e.description}
-                  <br />
-                </>
-              ))
+              <>
+                {e.title}: {e.description}
+                <br />
+              </>
+            ))
             : null}
         </Alert>
       </Snackbar>

@@ -7,6 +7,7 @@ import styles from './directionsCardsList.module.css';
 interface DirectionsListProps {
   directions: Direction[];
   delete: (id: string) => void;
+  suspendDirection: (id: string) => void;
 }
 
 export function DirectionsCardsList(props: DirectionsListProps) {
@@ -51,7 +52,9 @@ export function DirectionsCardsList(props: DirectionsListProps) {
               <Button startIcon={<Edit />} variant="text">
                 Editar
               </Button>
-              <Button startIcon={<Block />} variant="text">
+              <Button startIcon={<Block />} variant="text" onClick={
+                () => props.suspendDirection(dir.id)
+              }>
                 Suspender
               </Button>
             </div>

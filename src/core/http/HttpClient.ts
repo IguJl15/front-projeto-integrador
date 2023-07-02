@@ -13,6 +13,7 @@ export default interface HttpClient {
   get<T>(path: string, params?: Params): Promise<T>;
   post<T>(path: string, data: any): Promise<T>;
   delete<T>(path: string, data?: any): Promise<T | void>;
+  patch<T>(path: string, data: any): Promise<T>;
 }
 
 export class AxiosClient implements HttpClient {
@@ -42,6 +43,12 @@ export class AxiosClient implements HttpClient {
 
   async delete<T>(path: string, data: any): Promise<T | void> {
     const axiosResponse = await this.axios.delete<T>(path, { data: data });
+
+    return axiosResponse.data;
+  }
+
+  async patch<T>(path: string, data: any): Promise<T> {
+    const axiosResponse = await this.axios.patch<T>(path, data);
 
     return axiosResponse.data;
   }
