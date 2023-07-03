@@ -57,7 +57,7 @@ export const DirectionPage = () => {
         directions?.length == 0 ? (
           <EmptyDirectionsList />
         ) : (
-          <DirectionsCardsList delete={deleteDirection} directions={directions} changeState={suspendDirection}/>
+          <DirectionsCardsList delete={deleteDirection} directions={directions} suspendDirection={suspendDirection}/>
         )
       ) : (
         ''
