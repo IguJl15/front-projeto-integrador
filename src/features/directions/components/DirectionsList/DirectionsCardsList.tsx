@@ -8,6 +8,7 @@ interface DirectionsListProps {
   directions: Direction[];
   delete: (id: string) => void;
   suspendDirection: (id: string) => void;
+  openEdittingModal: (direction: Direction) => void;
 }
 
 export function DirectionsCardsList(props: DirectionsListProps) {
@@ -39,22 +40,28 @@ export function DirectionsCardsList(props: DirectionsListProps) {
             <div className={styles.direction_terms}>
               <div>
                 <Typography variant="body1">Termos de inclusão</Typography>
-                <TermsList terms={dir.inclusionTerms.map((e) => e.description)} />
+                <TermsList terms={dir.inclusionTerms} />
               </div>
               <div>
                 <Typography variant="body1">Termos de exclusão</Typography>
-                <TermsList terms={dir.exclusionTerms.map((e) => e.description)} />
+                <TermsList terms={dir.exclusionTerms} />
               </div>
             </div>
           </div>
           <div className={styles.direction_card_footer}>
             <div>
-              <Button startIcon={<Edit />} variant="text">
+              <Button
+                onClick={() => props.openEdittingModal(dir)}
+                startIcon={<Edit />}
+                variant="text"
+              >
                 Editar
               </Button>
-              <Button startIcon={<Block />} variant="text" onClick={
-                () => props.suspendDirection(dir.id)
-              }>
+              <Button
+                startIcon={<Block />}
+                variant="text"
+                onClick={() => props.suspendDirection(dir.id)}
+              >
                 Suspender
               </Button>
             </div>

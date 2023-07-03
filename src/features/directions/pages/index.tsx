@@ -37,27 +37,54 @@ export const DirectionPage = () => {
     );
   }
 
-
   function suspendDirection(id: string) {
-    runCatchingFailure(
-      async () => {
-        await repo.updateDirectionStatus(id, 'suspended');
-      },
-    );
+    runCatchingFailure(async () => {
+      await repo.updateDirectionStatus(id, 'suspended');
+    });
   }
 
   useEffect(() => {
-    fetchDirections()
+    fetchDirections();
     return;
   }, []);
 
+  // Direction Modal Controls
+  const [modalOpenned, setModalOpenned] = useState(false);
+  const [modalDirection, setModalDirection] = useState<Direction | undefined>();
+
+  function openModal(direction?: Direction) {
+    setModalDirection(direction);
+    setModalOpenned(true);
+  }
+
+  function closeModal() {
+    setModalDirection(undefined);
+    setModalOpenned(false);
+  }
+
   return (
-    <MainBodyLayout title="Direcionamentos" action={<CreateDirectionModal />}>
+    <MainBodyLayout
+      title="Direcionamentos"
+      action={
+        <CreateDirectionModal
+          direction={modalDirection}
+          open={openModal}
+          close={closeModal}
+          openned={modalOpenned}
+          repository={repo}
+        />
+      }
+    >
       {directions != null ? (
         directions?.length == 0 ? (
-          <EmptyDirectionsList />
+          <EmptyDirectionsList openModal={openModal} />
         ) : (
-          <DirectionsCardsList delete={deleteDirection} directions={directions} suspendDirection={suspendDirection}/>
+          <DirectionsCardsList
+            delete={deleteDirection}
+            directions={directions}
+            suspendDirection={suspendDirection}
+            openEdittingModal={openModal}
+          />
         )
       ) : (
         ''

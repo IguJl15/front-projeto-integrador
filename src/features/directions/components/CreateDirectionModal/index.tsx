@@ -1,47 +1,73 @@
 import { useError } from '@/core/contexts/ErrorContext';
-import Failure from '@/core/error/Failure';
 import { Add } from '@mui/icons-material';
 import { Button, Divider, Modal, Stack, Typography } from '@mui/material';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
+import { DirectionRepository } from '../../data/DirectionRepository';
+import { Direction } from '../../entities/Direction';
+import { Term } from '../../entities/Term';
 import { TermsList } from '../Terms/Term';
 import { FormRow, FormRowWithTextField } from '../TextField';
 import styles from './modal.module.css';
 
-interface ModalProps {
+export interface ModalProps {
+  open: () => void;
+  close: () => void;
+  openned: boolean;
+
+  repository: DirectionRepository;
+  direction?: Direction;
   variant?: 'text' | 'outlined' | 'contained';
 }
 
 export const CreateDirectionModal = (props: ModalProps) => {
+  const isUpdating = !!props.direction;
+
   // use errors
-  const { showError } = useError();
+  const { runCatchingFailure } = useError();
 
   // input fields
-  const [title, setTitle] = useState('');
-  const [email, setEmail] = useState('');
+  const [title, setTitle] = useState(props.direction?.title ?? '');
+  const [email, setEmail] = useState(props.direction?.redirectEmail ?? '');
   const [incTerm, setIncTerm] = useState('');
   const [excTerm, setExcTerm] = useState('');
 
   // terms
-  const [inclusionTerms, setInclusionTerms] = useState(new Set<string>());
-  const [exclusionterms, setExclusionTerms] = useState(new Set<string>());
+  const [inclusionTerms, setInclusionTerms] = useState(new Set<Term>());
+  const [exclusionterms, setExclusionTerms] = useState(new Set<Term>());
 
-  // modal state
-  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    if (isUpdating) {
+      setTitle(props.direction!.title);
+      setEmail(props.direction!.redirectEmail);
+      setInclusionTerms(new Set(props.direction!.inclusionTerms));
+      setExclusionTerms(new Set(props.direction!.exclusionTerms));
+    }
+  });
+
   // modal function
-  const handleOpen = () => setOpen(true);
+  const handleOpen = () => props.open();
   const handleClose = () => {
     resetModal();
-    setOpen(false);
+    props.close();
   };
 
   function createDirection() {
-    try {
-      handleClose();
-    } catch (error) {
-      if (error instanceof Failure) {
-        showError(error);
+    runCatchingFailure(async () => {
+      const data = {
+        title: title,
+        redirectEmail: email,
+        inclusionTerms: Array.from(inclusionTerms),
+        exclusionTerms: Array.from(exclusionterms),
+      };
+
+      if (isUpdating) {
+        props.direction = await props.repository.updateDirection(props.direction!.id, data);
+      } else {
+        props.direction = await props.repository.createDirection(data);
       }
-    }
+
+      handleClose();
+    });
   }
 
   function resetModal() {
@@ -56,20 +82,23 @@ export const CreateDirectionModal = (props: ModalProps) => {
 
   function addIncTerm() {
     if (incTerm && incTerm.trim()) {
-      if (exclusionterms.has(incTerm)) {
+      const term = new Term('', incTerm, false);
+      if (exclusionterms.has(term)) {
         // lancar error
         return;
       }
-      setInclusionTerms(inclusionTerms.add(incTerm));
+      setInclusionTerms(inclusionTerms.add(term));
     }
   }
   function addExcTerm() {
     if (excTerm && excTerm.trim()) {
-      if (inclusionTerms.has(excTerm)) {
+      const term = new Term('', incTerm, true);
+
+      if (inclusionTerms.has(term)) {
         // lancar error
         return;
       }
-      setExclusionTerms(exclusionterms.add(excTerm));
+      setExclusionTerms(exclusionterms.add(term));
     }
   }
 
@@ -79,7 +108,7 @@ export const CreateDirectionModal = (props: ModalProps) => {
         Criar direcionamento
       </Button>
       <Modal
-        open={open}
+        open={props.openned}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
@@ -104,7 +133,7 @@ export const CreateDirectionModal = (props: ModalProps) => {
                   inputType="text"
                   value={title}
                   onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                    setTitle(event.target.value.toUpperCase());
+                    setTitle(event.target.value);
                   }}
                 />
                 <FormRowWithTextField
@@ -114,7 +143,7 @@ export const CreateDirectionModal = (props: ModalProps) => {
                   inputType="email"
                   value={email}
                   onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                    setEmail(event.target.value.toUpperCase());
+                    setEmail(event.target.value);
                   }}
                 />
               </div>
