@@ -18,7 +18,7 @@ export const DirectionPage = () => {
     runCatchingFailure(
       async () => {
         await repo.deleteDirection(id);
-        setDirections(directions!.splice(directions!.findIndex((dir) => dir.id == id)));
+        setDirections(directions!.filter((dir) => dir.id != id));
       },
       () => setDirections([])
     );
