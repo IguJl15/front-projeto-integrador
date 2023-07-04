@@ -1,0 +1,33 @@
+
+/* FORM */
+
+form {
+    width: 100%;
+}
+
+.formRow {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    align-self: stretch;
+    min-height: 40px;
+
+    & button {
+        align-self: stretch;
+        max-height: 40px;
+    }
+}
+
+label {
+    display: flex;
+    min-height: 40px;
+    width: 180px;
+    align-items: center;
+
+    color: var(--black-60, rgba(0, 0, 0, 0.60));
+    letter-spacing: undefined;
+}
+
+.formRow > div {
+    flex: 1 0 0;
+}

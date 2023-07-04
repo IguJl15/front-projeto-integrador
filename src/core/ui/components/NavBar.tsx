@@ -5,23 +5,22 @@ import { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { greenColor } from '../constants/colors';
 
-export default function NavBar() {
+export function NavBar() {
   const auth = useAuth();
 
   return (
     <AppBar position="static" style={{ backgroundColor: greenColor }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters={true}>
-          <img src="https://lorempic.com/46" alt="A" style={{ padding: '0px 8px' }} />
+          <Link to="/">
+            <img src="https://lorempic.com/46" alt="A" style={{ padding: '0px 8px' }} />
+          </Link>
           <Box sx={{ display: { xs: 'flex' } }}>
-            <NavBarItem>
+            <NavBarItem url="/">
               <Typography variant="body1">Dashboard</Typography>
             </NavBarItem>
-            <NavBarItem>
-              <Typography variant="body1">Dashboard</Typography>
-            </NavBarItem>
-            <NavBarItem>
-              <Typography variant="body1">Dashboard</Typography>
+            <NavBarItem url="/directions">
+              <Typography variant="body1">Direcionamentos</Typography>
             </NavBarItem>
           </Box>
           <Box
@@ -39,14 +38,14 @@ export default function NavBar() {
           </Box>
           <div style={{ padding: '0px 8px' }}>
             {!auth.signed && (
-              <Link to="/">
+              <Link to="/login">
                 <Button variant="contained" startIcon={<Login />}>
                   Login
                 </Button>
               </Link>
             )}
             {auth.signed && (
-              <Link to="/">
+              <Link to="/account">
                 <IconButton
                   size="large"
                   aria-label="account of current user"
@@ -65,10 +64,12 @@ export default function NavBar() {
   );
 }
 
-function NavBarItem({ children }: { children: ReactNode; url?: string }) {
+function NavBarItem({ children, url }: { children: ReactNode; url?: string }) {
   return (
-    <Box sx={{ padding: { xs: '0px 2px', sm: '0px 8px' } }}>
-      <Button variant="text">{children}</Button>
-    </Box>
+    <Link to={url ?? '#'}>
+      <Box sx={{ padding: { xs: '0px 2px', sm: '0px 8px' } }}>
+        <Button variant="text">{children}</Button>
+      </Box>
+    </Link>
   );
 }

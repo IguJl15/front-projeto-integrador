@@ -2,33 +2,23 @@ import { API_URL } from '@/config';
 import HttpClient, { AxiosClient } from '@/core/http/HttpClient';
 import { BrowserLocalStorage } from '@/core/local_storage/LocalStorage';
 import { PromiseOr } from '@/core/types/PromiseOr';
-import {
-  AuthData,
-  AuthError,
-  AuthRepository,
-  AuthRepositoryImpl,
-  LoginParameters,
-  LoginUsecase,
-} from '@/features/auth';
-import { RegisterParameters, RegisterUsecase } from '@/features/auth/commands/RegisterUseCase';
+import { AuthData, AuthError } from '@/features/auth';
+import { AuthRepository } from '@/features/auth/data/AuthRepository';
+import { LoginParams } from '@/features/auth/dtos/LoginParams';
+import { RegisterParams } from '@/features/auth/dtos/RegisterParams';
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
 
 interface AuthContextData {
   signed: boolean;
   authData: AuthData | null;
-  register(params: RegisterParameters): PromiseOr<void>;
-  logIn(params: LoginParameters): PromiseOr<void>;
+  register(params: RegisterParams): PromiseOr<void>;
+  logIn(params: LoginParams): PromiseOr<void>;
   logOut(): PromiseOr<void>;
 }
 
-const httpClient: HttpClient = new AxiosClient(API_URL);
-const authRepository: AuthRepository = new AuthRepositoryImpl(
-  httpClient,
-  BrowserLocalStorage.instance
-);
+export const httpClient: HttpClient = new AxiosClient(API_URL);
 
-const loginUseCase = new LoginUsecase(authRepository);
-const registerUseCase = new RegisterUsecase(authRepository);
+export const authRepository = new AuthRepository(httpClient, BrowserLocalStorage.instance);
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
@@ -42,16 +32,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(storedAuthData);
     } catch (error) {
       if (error instanceof AuthError == false) {
-        console.log('erro no auth Context');
-        console.log(error);
-
         throw error;
       }
     }
   }, []);
 
-  async function logIn(params: LoginParameters) {
-    const loginResponse = await loginUseCase.call(params);
+  async function logIn(params: LoginParams) {
+    const loginResponse = await authRepository.login(params);
 
     data.authData = loginResponse;
     data.signed = true;
@@ -59,8 +46,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(loginResponse);
   }
 
-  async function register(params: RegisterParameters) {
-    const registerResponse = await registerUseCase.call(params);
+  async function register(params: RegisterParams) {
+    const registerResponse = await authRepository.register(params);
 
     data.authData = registerResponse;
     data.signed = true;

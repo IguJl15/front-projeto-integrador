@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+.container {
+     display: flex;
+     width: 836px;
+     padding: 8px;
+     flex-direction: column;
+     align-items: flex-start;
+     gap: 8px;
+
+     position: absolute;
+     top: 50%;
+     left: 50%;
+     transform: translate(-50%, -50%);
+     border-radius: 8px;
+     background: var(--white-100, #FFF);
+}
+
+.modal_title {
+     display: flex;
+     padding: 4px 8px;
+     align-items: flex-start;
+     gap: 10px;
+     align-self: stretch;
+}
+
+.modal_information_frame {
+     display: flex;
+     padding: 0px 8px;
+     align-items: flex-start;
+     gap: 8px;
+     align-self: stretch;
+}
+
+.modal_information_title {
+     display: flex;
+     width: 150px;
+     align-items: flex-start;
+     gap: 10px;
+     align-self: stretch;
+
+     color: var(--black, #000);
+}
+
+.modal_information_title>span {
+     display: flex;
+     flex-direction: column;
+     flex: 1 0 0;
+
+     color: var(--black, #000);
+
+     font-size: 24px;
+     font-family: Roboto;
+     line-height: 36px;
+}
+
+.modal_information_form {
+     display: flex;
+     padding: 8px;
+     flex-direction: column;
+     align-items: flex-start;
+     gap: 8px;
+     flex: 1 0 0;
+}
+
+/* Filter ----------------------------------- */
+.modal_filter_frame {
+     display: flex;
+     padding: 0px 8px;
+     align-items: flex-start;
+     gap: 8px;
+     align-self: stretch;
+}
+
+.modal_filter_text_area {
+     width: 100%;
+
+     color: var(--black-87, rgba(0, 0, 0, 0.87));
+     font-size: 20px;
+     font-family: Roboto;
+     font-weight: 500;
+     line-height: 28px;
+}
+
+.modal_filter_typography {
+     height: 434px;
+     display: flex;
+     width: 150px;
+     align-items: flex-start;
+     gap: 10px;
+     align-self: stretch;
+}
+
+.modal_filter_typography>span {
+     display: flex;
+     flex-direction: column;
+     flex: 1 0 0;
+
+     color: var(--black, #000);
+
+     font-size: 24px;
+     font-family: Roboto;
+     line-height: 36px;
+}
+
+.modal_filter_form {
+     display: flex;
+     padding: 4px 0px;
+     flex-direction: column;
+     align-items: flex-start;
+     gap: 8px;
+     flex: 1 0 0;
+}
+
+/* Modal`s footer, place where we placed the action buttons -----------------------*/
+footer {
+     height: 32px;
+     display: flex;
+     padding: 8px;
+     justify-content: flex-end;
+     align-items: center;
+     gap: 10px;
+     align-self: stretch;
+}
+
+
+.termsListContainer {
+    padding: 16.5px 14px;
+    align-self: stretch;
+    border: 1px solid var(--border-inactive, rgba(0, 0, 0, 0.38));
+    border-radius: 4px;
+    min-height: 50px;
+}

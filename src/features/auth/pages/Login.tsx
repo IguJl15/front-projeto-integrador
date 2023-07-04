@@ -1,27 +1,79 @@
 import { useAuth } from '@/core/contexts/AuthContext';
-import { EmailTextField } from '@/core/ui/components/EmailTextField';
+import { useError } from '@/core/contexts/ErrorContext';
+import Failure from '@/core/error/Failure';
+import { EmailTextField } from '@/features/auth/components/EmailTextField';
+import { PasswordTextField } from '@/features/auth/components/PasswordTextField';
 import { black60 } from '@/core/ui/constants/colors';
-import { VpnKeyOutlined } from '@mui/icons-material';
-import { Box, Button, InputAdornment, Stack, TextField, Typography } from '@mui/material';
-import { FormEvent, useEffect } from 'react';
+import { Box, Button, Stack, Typography } from '@mui/material';
+import { FormEvent, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+
+type ErrorState = {
+  emailError: string | null;
+  passwordError: string | null;
+};
 
 export default function Login() {
   const { signed, logIn } = useAuth();
+  const { showError } = useError();
   const navigate = useNavigate();
+
+  const [errors, setErrors] = useState<ErrorState>({
+    emailError: null,
+    passwordError: null,
+  });
 
   useEffect(() => {
     if (signed) navigate('/');
   });
 
-  function onSubmit(event: FormEvent<HTMLFormElement>): void {
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
     const formData = new FormData(event.target as HTMLFormElement);
 
-    logIn({
-      email: formData.get('email')?.toString() ?? '',
-      password: formData.get('password')?.toString() ?? '',
-    });
+    try {
+      await logIn({
+        email: formData.get('email')?.toString() ?? '',
+        password: formData.get('current-password')?.toString() ?? '',
+      });
+    } catch (error) {
+      if (error instanceof Failure) {
+        showError(error);
+      }
+    }
+  }
+
+  function emptyPasswordValidation(text: string) {
+    if (text == '') {
+      setErrors({
+        ...errors,
+        passwordError: 'O campo precisa ser preenchido',
+      });
+
+      return 'O campo precisa ser preenchido';
+    }
+
+    setErrors({ ...errors, passwordError: null });
+    return null;
+  }
+
+  function emptyEmailValidation(text: string) {
+    if (text == '') {
+      setErrors({
+        ...errors,
+        passwordError: 'O campo precisa ser preenchido',
+      });
+
+      return 'O campo precisa ser preenchido';
+    }
+
+    setErrors({ ...errors, emailError: null });
+    return null;
+  }
+
+  function isValidForm(): boolean {
+    return (errors.emailError || errors.passwordError) == null;
   }
 
   return (
@@ -47,30 +99,31 @@ export default function Login() {
           <form onSubmit={onSubmit}>
             <Box>
               <Stack spacing={'20px'}>
-                <EmailTextField />
-                <TextField
-                  type="password"
-                  name="password"
+                <EmailTextField
+                  customValidationFunction={emptyEmailValidation}
+                  onError={(error) => {
+                    setErrors({ ...errors, emailError: error });
+                  }}
+                />
+                <PasswordTextField
                   label="Senha"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <VpnKeyOutlined />
-                      </InputAdornment>
-                    ),
+                  name="current-password"
+                  customValidateFunction={emptyPasswordValidation}
+                  onError={(error) => {
+                    setErrors({ ...errors, passwordError: error });
                   }}
                 />
               </Stack>
             </Box>
+            <Stack paddingTop={'24px'} direction={'row'} justifyContent={'space-between'}>
+              <Link to="/register">
+                <Button>Criar conta</Button>
+              </Link>
+              <Button type="submit" variant="contained" disabled={!isValidForm()}>
+                Entrar
+              </Button>
+            </Stack>
           </form>
-          <Stack direction={'row'} justifyContent={'space-between'}>
-            <Link to="/register">
-              <Button>Criar conta</Button>
-            </Link>
-            <Button type="submit" variant="contained">
-              Entrar
-            </Button>
-          </Stack>
         </Stack>
       </Box>
     </div>
